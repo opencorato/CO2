@@ -32,7 +32,7 @@ I dati di monitoraggio dell'aria vengono rilevati dalle centraline ARPA più vic
 ![airq8](screenshots/airq/level-8.jpg) Estremamente pericoloso per la salute di qualsiasi individuo.<br />
 
 ## Rilevamento della qualità dell'aria
-![co2](screenshots/iphone4s/iOS Simulator Screen Shot 14.giu.2015 12.50.24.png)
+![co2](screenshots/iphone4s/iOS Simulator Screen Shot 14.giu.2015 12.05.38.png)
 
 ## Mappa degli inquinanti
 ![map](screenshots/iphone4s/ss_map.png)
