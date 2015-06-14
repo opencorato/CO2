@@ -2,7 +2,7 @@
 
 # CO2
 
-![co2](screenshots/iphone4s/ss_map.png)
+![co2](screenshots/iphone4s/iOS Simulator Screen Shot 14.giu.2015 11.40.50.png)
 
 CO2 è una App sviluppata per il monitoraggio dei dati ambientali in Puglia, rilevati dalle centraline [ARPA](http://www.arpa.puglia.it/web/guest/qariainq) distribuite su tutto il [territorio regionale](https://www.arpa.puglia.it/c/document_library/get_file?uuid=68743289-14f7-4f12-aaa3-e3e4087f6675&groupId=13883).
 
