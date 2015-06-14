@@ -1,0 +1,29 @@
+<ion-modal-view>
+  <ion-header-bar align-title="left" class="bar-positive">
+  <h1 class="title">Inquinanti</h1>
+  <div class="buttons">
+    <button class="button" ng-click="closeModal()">Close</button>
+  </div>
+</ion-header-bar> 
+  <ion-content class="padding has-footer">
+    
+    <div class="list card">
+      <div class="item item-divider">{{ polluting_descr }}</div>
+        <div class="item item-body">
+          <div>
+            {{ polluting_descr | polluting }}
+          </div>
+        </div>
+    </div>
+
+    <ion-list>
+      	<ion-item ng-repeat="level in levels">
+  		    <a class="item item-avatar" href="#">
+  		      <img ng-src="{{ level.image }}">
+  		      <h2>{{ level.name }} </h2>
+  		    </a>
+		</ion-item>
+	</ion-list>
+
+   </ion-content>
+</ion-modal-view>

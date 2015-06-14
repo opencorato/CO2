@@ -1,0 +1,39 @@
+<ion-view view-title="Centraline" hide-nav-bar="true">
+    
+    <ion-header-bar class="bar bar-header bar-light">
+        <div class="buttons">
+            <button class="button button-clear" ng-click="back()">
+                <i class="icon ion-ios-home"></i>
+            </button>
+        </div>
+        <h1 class="title">Centraline</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="openModal()">
+                <i class="icon ion-ios-help"></i>
+            </button>
+        </div>
+    </ion-header-bar>
+
+    <ion-content class="padding has-header">
+
+        <ion-refresher on-refresh="refresh()" pulling-text="Pull to Reload"></ion-refresher>
+
+        <ion-list>
+          <ion-item collection-repeat="airq in airqlist">
+            <a class="item item-avatar item-text-wrap" ui-sref="tab.detail({poll: airq.polluting })">
+                <img ng-src=" {{ airq.aiq.level | level_image }} " />
+                <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last }} </i> </h2>
+                <h3>{{ airq.city }} ({{ airq.state }})</h3>
+                <h4><i class="icon ion-ios-location"></i> {{ airq.location.latitude | number:4 }}, {{ airq.location.longitude | number:4 }} ({{ distance | number:2 }} Km)</h4>
+                <h5>{{ airq.aiq.level | level_descr }}</h5>
+                <p ng-if="airq.aiq.type == 'industriale'"><strong>{{ airq.aiq.warning }}x</strong> {{ airq.aiq.text }}, inquinamento {{ airq.aiq.type }}, {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
+                <p ng-if="airq.aiq.type == 'urbano'"><strong> {{ airq.aiq.value | number: 1 }} </strong>inquinamento {{ airq.aiq.type }}, {{ airq.aiq.realvalue }} {{ airq.aiq.um }}</p>
+            </a>
+          </ion-item>
+        </ion-list>
+
+        <ion-infinite-scroll on-infinite="refresh()" ng-if="total > page" immediate-check="false"></ion-infinite-scroll>
+
+  </ion-content>
+  
+</ion-view>

@@ -1,0 +1,91 @@
+<ion-modal-view>  
+<ion-header-bar align-title="left" class="bar-positive">
+  <h1 class="title">Informazioni</h1>
+  <div class="buttons">
+    <button class="button" ng-click="closeModal()">Close</button>
+  </div>
+</ion-header-bar>
+<ion-content class="padding has-footer">
+    <div class="list card">
+      <div class="item item-divider">La tua posizione</div>
+        <div class="item item-body">
+          <div>
+            <i class="icon ion-ios-location"> </i> {{ location | location }}
+          </div>
+        </div>
+    </div>
+
+    <div class="list card">
+      <div class="item item-divider">Fonte dei dati</div>
+        <div class="item item-avatar">
+          <img src="img/arpa_logo.png">
+          <h2>{{ source }}</h2>
+          <a href="{{ source_link }}" target="_blank">{{ source_link }}</a>
+          <p>{{ data_airq }}</p>
+      </div>
+    </div>
+
+    <div class="list card">
+
+    <div class="item item-avatar">
+        <h2>OpenPuglia</h2>
+        <p>Civic Hacking</p>
+    </div>
+
+      <div class="item item-image">
+      <img src="img/logo.png">
+    </div>
+
+    <a class="item ion-social-twitter positive" href="https://twitter.com/SGIPuglia">
+      @SGIPuglia
+      </a>
+
+      <a class="item ion-social-facebook positive" href="https://www.facebook.com/groups/1582370461982907/">
+      Facebook Group
+      </a>
+
+      <a class="item ion-ios-email positive" href="mailto:openpuglia@yahoo.it">
+      Email
+      </a>
+
+      <a class="item ion-ios-world positive" href="http://www.openpuglia.org" target="_blank">
+      http://www.openpuglia.org
+      </a>
+
+      <a class="item ion-social-googleplus positive" href="https://plus.google.com/u/0/communities/114201169795304528470" target="_blank">
+      Community Google+
+      </a>
+      
+    </div>
+
+    <div class="list card">
+      <div class="item item-avatar">
+        <img src="img/gzileni.jpg">
+        <h2>Giuseppe Zileni</h2>
+        <p>Senior Developer</p>
+      </div>
+
+    <a class="item ion-social-twitter positive" href="https://twitter.com/gzileni">
+      @gzileni
+      </a>
+
+      <a class="item ion-social-linkedin positive" href="https://it.linkedin.com/in/giuseppezileni">
+      giuseppezileni
+      </a>
+
+      <a class="item ion-ios-email positive" href="mailto:giuseppe.zileni@gmail.com">
+      giuseppe.zileni@gmail.com
+      </a>
+
+      <a class="item ion-social-github positive" href="https://github.com/giuseppezileni">
+      giuseppezileni
+      </a>
+
+      <a class="item ion-ios-world positive" href="http://www.gzileni.name">
+      http://www.gzileni.name
+      </a>
+
+    </div>
+
+   </ion-content>
+</ion-modal-view>
