@@ -1,6 +1,8 @@
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/opendatabari/airq-app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/opendatabari/co2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # CO2
+
+![co2](screenshots/iphone4s/![map](screenshots/iphone4s/ss_map.png).png)
 
 CO2 è una App sviluppata per il monitoraggio dei dati ambientali in Puglia, rilevati dalle centraline [ARPA](http://www.arpa.puglia.it/web/guest/qariainq) distribuite su tutto il [territorio regionale](https://www.arpa.puglia.it/c/document_library/get_file?uuid=68743289-14f7-4f12-aaa3-e3e4087f6675&groupId=13883).
 
@@ -30,13 +32,13 @@ I dati di monitoraggio dell'aria vengono rilevati dalle centraline ARPA più vic
 ![airq8](screenshots/airq/level-8.jpg) Estremamente pericoloso per la salute di qualsiasi individuo.<br />
 
 ## Rilevamento della qualità dell'aria
-![airq](screenshots/iphone6/iOS Simulator Screen Shot 07.giu.2015 01.18.38.png)
+![co2](screenshots/iphone4s/iOS Simulator Screen Shot 14.giu.2015 12.50.24.png)
 
 ## Mappa degli inquinanti
-![map](screenshots/iphone6/iOS Simulator Screen Shot 07.giu.2015 01.19.09.png)
+![map](screenshots/iphone4s/ss_map.png)
 
 ## Previsioni Meteo
-![weather](screenshots/iphone6/iOS Simulator Screen Shot 07.giu.2015 01.19.15.png)
+![weather](screenshots/iphone4s/iOS Simulator Screen Shot 14.giu.2015 12.06.32.png)
 
 ## Download
 
