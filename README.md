@@ -42,6 +42,11 @@ I dati di monitoraggio dell'aria vengono rilevati dalle centraline ARPA più vic
 
 ## Download
 
+<a href="https://play.google.com/store/apps/details?id=com.ionicframework.co2">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/it_generic_rgb_wo_60.png" />
+</a>
+
 ## Riferimento
 
 La App è stata sviluppata con [IonicFramework](http://www.ionicframework.com)
