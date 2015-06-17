@@ -52,6 +52,19 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
   var _callback_geolocation_error = function (error) {
     console.error('code: '    + error.code    + '\n' +
                   'message: ' + error.message + '\n');
+    location = {
+      latitude: 0,
+      longitude: 0,
+      altitude: 0,
+      accuracy: 0,
+      altitudeAccuracy: 0,
+      heading: 0,
+      speed: 0,
+      timestamp: '',
+      isOut: false 
+    };
+    
+    $localstorage.setObject('location', location);
   };
 
   var geolocation = {

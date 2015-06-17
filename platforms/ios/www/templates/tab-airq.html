@@ -1,81 +1,95 @@
 <ion-view view-title="CO2" hide-nav-bar="true">
     
     <ion-header-bar class="bar bar-header bar-light">
-      <h1 class="title">Inquinamento</h1>
+      <h1 class="title">Qualità dell'aria</h1>
       <div class="buttons">
         <button class="button button-clear" ng-click="openModal()"><i class="icon ion-ios-help"></i></button>
       </div>
     </ion-header-bar>
 
-    <ion-content class="padding has-header">
+    <ion-content>
 
-        <div justgage
-         title="{{ title }} {{ dist | distance }}" 
-         title-font-color="{{ titleFontColor }}"
-         value="{{ value }}" 
-         value-font-color="{{ valueFontColor }}"
-         width="{{ width }}" 
-         height="{{ height }}" 
-         relative-gauge-size="{{ relativeGaugeSize }}"
-         value-min-font-size="{{ valueMinFontSize }}" 
-         title-min-font-size="{{ titleMinFontSize }}"
-         label-min-font-size="{{ labelMinFontSize }}" 
-         min-label-min-font-size="{{ minLabelMinFontSize }}"
-         maxLabelMinFontSize="{{ maxLabelMinFontSize }}"
-         min="{{ min }}" 
-         max="{{ max }}"
-         hide-min-max="{{ hideMinMax }}" 
-         hide-value="{{ hideValue }}" 
-         hide-inner-shadow="{{ hideInnerShadow }}"
-         gauge-width-scale="{{ gaugeWidthScale }}" 
-         gauge-color="{{ gaugeColor }}"
-         show-inner-shadow="{{ showInnerShadow }}" 
-         shadow-opacity="{{ shadowOpacity }}"
-         shadow-size="{{ shadowSize }}" 
-         shadow-vertical-offset="{{ shadowVerticalOffset }}"
-         level-colors="{{ levelColors }}" 
-         custom-sectors="{{ customSectors }}" 
-         no-gradient="{{ noGradient }}"
-         label="{{ label }} {{ last_value | last }}" 
-         label-font-color="{{ labelFontColor }}"
-         start-animation-time="{{ startAnimationTime }}" 
-         start-animation-type="{{ startAnimationType }}"
-         refresh-animation-time="{{ refreshAnimationTime }}" 
-         refresh-animation-type="{{ refreshAnimationType }}"
-         donut="{{ donut }}" 
-         donut-start-angle="{{ donutStartAngle }}"
-         counter="{{ counter }}" 
-         decimals="{{ decimals }}" 
-         symbol="{{ symbol }}" 
-         format-number="{{ formatNumber }}"
-         human-friendly="{{ humanFriendly }}" 
-         human-friendly-decimal="{{ humanFriendlyDecimal }}"
-         text-renderer="textRenderer()">
-         </div>
-
-        <div>
-            <a class="button button-full icon-right ion-ios-location button-calm" ui-sref="tab.city({city: city })">Guarda la Mappa</a>
-        </div>
-
-         <div class="list" ng-show="view_descr">
-              <a class="item item-text-wrap" href="#">
-                <h2>{{ level_poll | level_descr }}</h2>
-                <p>{{ level_type }}</p>
-                <p>{{ poll_sel.name.polluting | polluting }}</p>
-              </a>
-         </div>
-
-         <div class="card">
-            <div class="item item-text-wrap">
-                <label class="item item-input item-select">
-                    <div class="input-label">
-                    Inquinante
-                    </div>
-                    <select ng-model="poll_sel.name" ng-change="changePoll()" ng-options="poll.polluting for poll in polls">
-                    </select>
-                </label>
+        <div class="list card" ng-show="view_data">
+          <div class="item item-avatar item-text-wrap">
+            <img ng-src=" {{ poll_sel.item.aiq.level | level_image }} " />
+            <h2>{{ poll_sel.item.polluting }}</h2>
+            <h3>{{ level_poll | level_descr }}</h3>
+            <h4>{{ level_type }}</h4>
+            <p>{{ poll_sel.item.polluting | polluting }}</p>
+            <label class="item item-input item-select">
+                            <div class="input-label">
+                            Inquinante
+                            </div>
+                            <select ng-model="poll_sel.item" ng-change="changePoll()" ng-options="poll.polluting for poll in polls">
+                            </select>
+                        </label>
             </div>
-        </div>
+            <div class="item tabs tabs-secondary tabs-icon-left">
+                <a class="tab-item" ui-sref="tab.city({city: city })">
+                  <i class="icon ion-ios-location"></i>
+                  Mappa
+                </a>
+                <a class="tab-item" href="#" ng-click="share()">
+                  <i class="icon ion-share"></i>
+                  Share
+                </a>
+                <!--
+                <a class="tab-item" href="#">
+                  <i class="icon ion-chatbox"></i>
+                  Comment
+                </a>
+                
+                -->
+            </div>
+          </div>
+
+          <!--
+          <div class="item item-body">
+          -->
+            <div justgage
+                 title="{{ title }} {{ last_value | last }}" 
+                 title-font-color="{{ titleFontColor }}"
+                 value="{{ value }}" 
+                 value-font-color="{{ valueFontColor }}"
+                 width="{{ width }}" 
+                 height="{{ height }}" 
+                 relative-gauge-size="{{ relativeGaugeSize }}"
+                 value-min-font-size="{{ valueMinFontSize }}" 
+                 title-min-font-size="{{ titleMinFontSize }}"
+                 label-min-font-size="{{ labelMinFontSize }}" 
+                 min-label-min-font-size="{{ minLabelMinFontSize }}"
+                 maxLabelMinFontSize="{{ maxLabelMinFontSize }}"
+                 min="{{ min }}" 
+                 max="{{ max }}"
+                 hide-min-max="{{ hideMinMax }}" 
+                 hide-value="{{ hideValue }}" 
+                 hide-inner-shadow="{{ hideInnerShadow }}"
+                 gauge-width-scale="{{ gaugeWidthScale }}" 
+                 gauge-color="{{ gaugeColor }}"
+                 show-inner-shadow="{{ showInnerShadow }}" 
+                 shadow-opacity="{{ shadowOpacity }}"
+                 shadow-size="{{ shadowSize }}" 
+                 shadow-vertical-offset="{{ shadowVerticalOffset }}"
+                 level-colors="{{ levelColors }}" 
+                 custom-sectors="{{ customSectors }}" 
+                 no-gradient="{{ noGradient }}"
+                 label="{{ label }} {{ dist | distance }}" 
+                 label-font-color="{{ labelFontColor }}"
+                 start-animation-time="{{ startAnimationTime }}" 
+                 start-animation-type="{{ startAnimationType }}"
+                 refresh-animation-time="{{ refreshAnimationTime }}" 
+                 refresh-animation-type="{{ refreshAnimationType }}"
+                 donut="{{ donut }}" 
+                 donut-start-angle="{{ donutStartAngle }}"
+                 counter="{{ counter }}" 
+                 decimals="{{ decimals }}" 
+                 symbol="{{ symbol }}" 
+                 format-number="{{ formatNumber }}"
+                 human-friendly="{{ humanFriendly }}" 
+                 human-friendly-decimal="{{ humanFriendlyDecimal }}"
+                 text-renderer="textRenderer()">
+            </div>
+            
         
   </ion-content>
   

@@ -111,7 +111,9 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 
         location = Geolocation.location();
 
-		console.log('**** Center ' + location.latitude + ',' + location.longitude);
+    	if (location.latitude != 0 && location.longitude != 0) {
+			console.log('**** Center ' + location.latitude + ',' + location.longitude);
+		};
 
 		angular.extend($scope, {
 			defaults: {
@@ -176,7 +178,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 			    },
 			    onEachFeature: function (feature, layer) {
 			    	console.log('Features: ' + JSON.stringify(feature));
-			    	layer.bindPopup(_html_feature(feature.properties, Geolocation));
+			    	layer.bindPopup(_html_feature(feature.properties, Geolocation, Level));
 			    },
 			    pointToLayer: function ( feature, latlng ) {
 
@@ -229,21 +231,25 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 			attribution: osmAttribution
 		}).addTo(map);
 
-		var ll = L.latLng(lat, lng);
-
 		if (marker) {
 			map.removeLayer(marker);
 		};
 
-		marker = L.userMarker(ll, {
-			pulsing: true, 
-			accuracy: 100, 
-			smallIcon: true,
-			opacity: 0.2
-		});
-		marker.addTo(map);
+		// marker della posizione del device
+		if (lat != 0 && lng != 0) {
 
-		map.setView([lat, lng], 9);
+			var ll = L.latLng(lat, lng);
+
+			marker = L.userMarker(ll, {
+				pulsing: true, 
+				accuracy: 100, 
+				smallIcon: true,
+				opacity: 0.2
+			});
+			marker.addTo(map);
+
+			map.setView([lat, lng], 9);
+		};
 
 		var options_weather_layer = {
 			showLegend: false, 
@@ -382,7 +388,7 @@ function _get_opacity(val) {
 
 };
 
-function _html_feature(feature, Geolocation) {
+function _html_feature(feature, Geolocation, Level) {
 	/*
 
 		{
@@ -413,10 +419,10 @@ function _html_feature(feature, Geolocation) {
 
 	var html = '<h4>' + feature.station + '</h4>' +
 			   '<h5>' + feature.city + ' (' + feature.state + ')</h5>' +
-			   '<p>Valore: ' + Math.round(feature.aiq.value) + ' ' + feature.aiq.um + ' <br />' +
-			   'Inquinamento: ' + feature. aiq.type + '<br />' +
-			   'Qualità: ' + feature.aiq.text + '</p>' +
-			   'Distanza: ' + Geolocation.distance(feature.location.latitude, feature.location.longitude) + ' km';
+			   '<p>Valore misurato è <strong>' + Math.round(feature.aiq.realvalue) + '</strong> ' + feature.aiq.um + ' <br />' +
+			   'Inquinamento di tipo ' + feature. aiq.type + '<br />' +
+			   'Indice di qualità dell\'aria è di <strong>' + Math.round(feature.aiq.value) + '</strong><br />' + Level.getInfo(feature.aiq.level) + '<br />' + 
+			   'Distanza: ' + Geolocation.distance(feature.location.latitude, feature.location.longitude) + ' km' + '</p>';
 
 	return html;
 }

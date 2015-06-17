@@ -66,7 +66,7 @@ service.factory('pdb', function (pouchDB) {
 		get: function(db, id, callback) {
 			db.get(id).then(function (doc) {
 			  // handle doc
-			  	console.log('doc founded ' + JSON.stringify(doc));
+			  	// console.log('doc founded ' + JSON.stringify(doc));
 				if (typeof callback === 'function') {
 					callback(false, doc)
 				}  

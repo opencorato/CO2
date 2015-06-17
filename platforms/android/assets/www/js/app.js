@@ -19,7 +19,7 @@
 
 angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'airq.controllers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'GaugeMeter', 'frapontillo.gage', 'async', 'S', 'pouchdb'])
 
-.run(function ($ionicPlatform, Geolocation, $localstorage, $cordovaPush, $ionicUser) {
+.run(function ($ionicPlatform, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush) {
 
   $ionicPlatform.ready(function () {
 
@@ -85,6 +85,11 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   heatmap: false,
   force_reload: false,
   level: 2
+})
+
+.constant('SHARE', {
+  www: 'http://opendatabari.github.io/CO2/',
+  github: 'https://github.com/opendatabari/CO2/tree/master/www/'
 })
 
 // nodeJS Server Proxy (-- deprecated --)

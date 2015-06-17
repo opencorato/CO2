@@ -22,7 +22,7 @@ angular.module('airq.controllers', [])
 /////////////////////////////
 // Air Quality Controller
 //
-.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Level, Import, GeoJSON) {
+.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Level, Import, GeoJSON, $ionicActionSheet, $cordovaSocialSharing, SHARE) {
 
 	Geolocation.watch();
 
@@ -30,8 +30,92 @@ angular.module('airq.controllers', [])
   var location;
   var watch;
   var gauges = [];
+  var p_sel;
 
   showSpinner(true);
+  $scope.view_data = false;
+
+  function _share (type) {
+
+    var message = '';
+    var image = '';
+    var link = '';
+
+    var l = _.find(Level.items, function (item) {
+      return item.level === p_sel.aiq.level;
+    });
+
+    if (typeof l !== 'undefined') {
+      message = 'Rilevato inquinante ' + p_sel.polluting + ' a ' + Math.round(p_sel.aiq.realvalue) + ' ' + p_sel.aiq.um + ' (aqi: ' + Math.round(p_sel.aiq.value) + ') ' +
+                'a ' + p_sel.station + ',inquinamento ' + p_sel.aiq.type + ',' + l.name;
+
+      image = SHARE.github + l.image;
+      link = SHARE.www;
+    };
+
+    console.log(message + '\n' + image + '\n' + link);
+
+    if (type === 'facebook') {
+      $cordovaSocialSharing
+        .shareViaFacebook(message, image, link)
+        .then(_success_share, _error_share);
+    } else if (type === 'twitter') {
+      $cordovaSocialSharing
+        .shareViaTwitter(message, image, link)
+        .then(_success_share, _error_share);
+    } else if (type === 'whatsapp') {
+      $cordovaSocialSharing
+      .shareViaWhatsApp(message, image, link)
+      .then(_success_share, _error_share);
+    }
+  };
+
+  function _success_share(result) {
+    console.log('condivisione avvenuta con successo.');
+  };
+
+  function _error_share(err) {
+    console.log('errore nella condivisione.');
+  };
+
+  $scope.share = function() {
+
+   // Show the action sheet
+   var hideSheet = $ionicActionSheet.show({
+      buttons: [
+        { text: '<i class="icon ion-social-facebook"></i> Facebook' },
+        { text: '<i class="icon ion-social-twitter"></i> Twitter' },
+        { text: '<i class="icon ion-social-whatsapp"></i> WhatApp'}
+      ],
+      titleText: 'Share',
+      cancelText: 'Cancel',
+      cancel: function() {
+          // add cancel code..
+        },
+      buttonClicked: function(index) {
+        if (index == 0) {
+          // facebook
+          console.log('share with facebook');
+          _share('facebook');
+        } else if (index == 1) {
+          // twitter
+          console.log('share with twitter');
+          _share('twitter');
+        } else if (index == 2) {
+          console.log('share with whatsapp');
+          _share('whatsapp');
+        }
+
+        return true;
+      }
+   });
+
+   // For example's sake, hide the sheet after two seconds
+   $timeout(function() {
+     hideSheet();
+   }, 2000);
+
+ };
   
   $ionicModal.fromTemplateUrl('templates/info.html', {
       scope: $scope,
@@ -86,18 +170,19 @@ angular.module('airq.controllers', [])
   $scope.prepare = function (data) {
 
     showSpinner(true);
+    var data_sorted;
 
-    var data_sorted = _.sortBy(data, function (item) {
-      return Geolocation.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
-    });
+    if (location.latitude != 0 && location.longitude != 0) {
+      data_sorted = _.sortBy(data, function (item) {
+        return Geolocation.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
+      });
+    } else {
+      console.log('non sono riuscito a leggere le coordinate geografiche.');
+      data_sorted = data;
+    }
 
     console.log('Data sorted: ' + _.size(data_sorted));
     console.log('First element ' + JSON.stringify(data_sorted[0]));
-
-
-    $scope.poll_sel = {
-      name: data_sorted[0]
-    };
 
     console.log('select data from: ' + data_sorted[0].city);
 
@@ -106,18 +191,25 @@ angular.module('airq.controllers', [])
       return item.station === data_sorted[0].station;
     });
 
+    p_sel = data_filtered[0];
     $scope.polls = data_filtered;
-    gauge(data_sorted[0]);
-    last(data_sorted[0]);
+    
+    $scope.poll_sel = {
+      item: p_sel
+    };
+
+    gauge(p_sel);
+    last(p_sel);
 
     // showSpinner(false);
 
   };
 
   $scope.changePoll = function () {
-    var p = $scope.poll_sel.name;
-    gauge(p);
-    last(p)
+    p_sel = $scope.poll_sel.item;
+    console.log('change polluting to ' + JSON.stringify($scope.poll_sel.item));
+    gauge($scope.poll_sel.item);
+    last($scope.poll_sel.item);
   };
 
   function gauge (item) {
@@ -149,13 +241,15 @@ angular.module('airq.controllers', [])
     }
     */
 
-    var descr = 'Inquinamento di tipo ' + item.aiq.type + ', ' + Math.round(item.aiq.value) + ' ' + item.aiq.um
+    console.log('item ' + JSON.stringify(item));
+
+    var descr = 'Inquinamento di tipo ' + item.aiq.type;
+    console.log(descr);
+    console.log('level: ' + item.aiq.level);
+    
     $scope.level_type = descr;
 
-    // preparo i dati
-    // console.log('gauge: ' + JSON.stringify(item));
-
-    $scope.title = item.station;
+    $scope.title = Math.round(item.aiq.realvalue) + ' ' + item.aiq.um;
     $scope.titleFontColor = 'blue';
     $scope.value = Math.round(item.aiq.value);
     $scope.valueFontColor = 'red';
@@ -181,7 +275,7 @@ angular.module('airq.controllers', [])
     $scope.levelColors = Level.getColors();
 
     $scope.noGradient = false;
-    $scope.label = item.polluting;
+    $scope.label = item.station;
     $scope.labelFontColor = item.aiq.color;
     $scope.startAnimationTime = 1000;
     $scope.startAnimationType = 'linear';
@@ -196,12 +290,11 @@ angular.module('airq.controllers', [])
     $scope.humanFriendly = true;
     $scope.humanFriendlyDecimal = true;
 
-    console.log('level: ' + item.aiq.level);
     $scope.level_poll = item.aiq.level;
 
-    // $scope.dist = GeoJSON.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
     $scope.city = item.city;
 
+    $scope.view_data = true;
     showSpinner(false);
     
   };
@@ -240,7 +333,7 @@ angular.module('airq.controllers', [])
     
     console.log('init last...');
 
-    Import.last(function (err, data_last) {
+    Import.last(1, function (err, data_last) {
 
       console.log('last_data n.:' + _.size(data_last.dataset));
       console.log('check last value by ' + JSON.stringify(item));
@@ -372,15 +465,15 @@ angular.module('airq.controllers', [])
   // calcolo la variazione di valori rispetto ai valori precedenti
   $scope.last = function () {
 
-    Import.last(function (err, data_last) {
+    Import.last(1, function (err, data_last) {
 
-      console.log('last_data n.:' + _.size(data_last.dataset));
+      // console.log('last_data n.:' + _.size(data_last.dataset));
 
       for (var i = 0; i < $scope.airqlist.length; i++) {
         $scope.$watch('airqlist[' + i + ']', function (newValue, oldValue) {
           
-          //console.log('newvalue location: ' + JSON.stringify(newValue.location));
-          //console.log('location: ' + JSON.stringify(location));
+          // console.log('newvalue location: ' + JSON.stringify(newValue.location));
+          // console.log('location: ' + JSON.stringify(location));
           
           var item_poll = _.find(data_last.dataset, function (item) {
             //console.log('item last: ' + JSON.stringify(item));
@@ -392,12 +485,12 @@ angular.module('airq.controllers', [])
 
           if (typeof item_poll !== 'undefined') {
 
-            // console.log('item founded: ' + JSON.stringify(item_poll));
-            
             var value_r = newValue.aiq.realvalue;
             var value_l = item_poll.aiq.realvalue;
 
-            $scope.last_value = (value_l / value_r);
+            $scope.last_value = value_l / value_r;
+
+            console.log('item founded: ' + JSON.stringify(item_poll) + '\n Last Value: ' + $scope.last_value);
 
             if (value_l > value_r) {
               $scope.icon_value = 'icon ion-ios-arrow-thin-down';

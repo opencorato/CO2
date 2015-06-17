@@ -192,27 +192,20 @@ filters.filter("level_descr", function (_, Level) {
   }
 });
 
-filters.filter("level_image", function () {
+filters.filter("level_image", function (Level) {
   return function (input) {
 
     console.log('level color: ' + input);
 
-    if (input === 1) {
-      return 'img/airq/level-1.jpg';
-    } else if (input === 2) {
-      return 'img/airq/level-2.jpg';
-    } else if (input === 3) {
-      return 'img/airq/level-3.jpg';
-    } else if (input === 4) {
-      return 'img/airq/level-4.jpg';
-    } else if (input === 5) {
-      return 'img/airq/level-5.jpg';
-    } else if (input === 6) {
-      return 'img/airq/level-6.jpg';
-    } else if (input === 7) {
-      return 'img/airq/level-7.jpg';
-    } else if (input === 8) {
-      return 'img/airq/level-8.jpg';
-    };  
+    var l = _.find(Level.items, function (item) {
+      return item.level === input;
+    });
+
+    if (typeof l === 'undefined') {
+      return '';
+    } else {
+      return l.image;
+    };
+
   }
 });

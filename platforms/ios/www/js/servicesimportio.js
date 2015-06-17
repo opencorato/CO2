@@ -38,41 +38,50 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 	var importio_json = {
 
         // carico gli utlimi dati per calcolar la variazione ai dati attuali
-		last: function (callback_service) {
-			var isFind = false;
-			var i = 1;
-			var nDays = 7;	// controllo solo i dati negli ultimi sette giorni
+		last: function (days, callback_service) {
+			var nDays;	// controllo solo i dati negli ultimi sette giorni
 			var data_response = null;
 
+			if (days > 7) {
+				nDays = 7;
+			} else {
+				nDays = days;
+			};
+
 			pdb.open('airq', function (db_istance) {
+				
 				db = db_istance;
-				while (!isFind) {
+
+				var array_last = [];
+				var i = 1;
+
+				for (i = 1; i <= nDays; i++) {
 					var id_last = moment().subtract(i, 'days').format("YYYYMMDD");
-					console.log('check data last by ID: ' + id_last);
-					pdb.get(db, id_last, function (err, data_last) {
-						if (!data_last) {
-							isFind = true;
-							console.log('founded last data.');
+					array_last.push(id_last);
+				};
+
+				async.each(array_last, function (item, callback) {
+					console.log('check: ' + item);
+					pdb.get(db, item, function (err, data_last) {
+						// console.log('data readed: ' + JSON.stringify(data_last));
+						if (!err && data_response == null) {
 							data_response = data_last;
-						}
+							// console.log('data founded: ' + JSON.stringify(data_response));
+						};
+						callback();
 					});
-
-					isFind = isFind || (i > nDays);
-					i++;
-				};
-
-				// non sono stati trovati dati nei giorni precedenti
-				if (data_response === null) {
-					console.log('archivio vuoto');
-					importio_json.start(callback_service);	
-				} else {
-					console.log('sono stati trovati dati precedenti');
-					if (typeof callback_service === 'function') {
-						callback_service(false, data_response);
+				}, function (err) {
+					if (data_response == null) {
+						console.log('archivio vuoto');
+						importio_json.start(callback_service);	
+					} else {
+						console.log('sono stati trovati dati precedenti');
+						if (typeof callback_service === 'function') {
+							callback_service(err, data_response);
+						};
 					};
-				};
+				});
 			});
-
 		},
 
 		// crea legge i dati

@@ -22,7 +22,7 @@
           <ion-item collection-repeat="airq in airqlist">
             <a class="item item-avatar item-text-wrap" ui-sref="tab.detail({poll: airq.polluting })">
                 <img ng-src=" {{ airq.aiq.level | level_image }} " />
-                <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last }} </i> </h2>
+                <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last:2 }} </i> </h2>
                 <h3>{{ airq.city }} ({{ airq.state }})</h3>
                 <h4><i class="icon ion-ios-location"></i> {{ airq.location.latitude | number:4 }}, {{ airq.location.longitude | number:4 }} ({{ distance | number:2 }} Km)</h4>
                 <h5>{{ airq.aiq.level | level_descr }}</h5>

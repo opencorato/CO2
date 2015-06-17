@@ -15,6 +15,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/nl.x-services.plugins.socialsharing/www/SocialSharing.js",
+        "id": "nl.x-services.plugins.socialsharing.SocialSharing",
+        "clobbers": [
+            "window.plugins.socialsharing"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -55,6 +62,7 @@ module.exports.metadata =
 {
     "com.ionic.keyboard": "1.0.4",
     "com.phonegap.plugins.PushPlugin": "2.4.0",
+    "nl.x-services.plugins.socialsharing": "4.3.19-dev",
     "org.apache.cordova.device": "0.3.0",
     "org.apache.cordova.geolocation": "0.3.12"
 }

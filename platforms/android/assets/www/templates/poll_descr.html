@@ -9,21 +9,21 @@
     
     <div class="list card">
       <div class="item item-divider">{{ polluting_descr }}</div>
-        <div class="item item-body">
-          <div>
+        <div class="item item-body item-text-wrap">
+          <p>
             {{ polluting_descr | polluting }}
-          </div>
+          </p>
         </div>
     </div>
 
     <ion-list>
-      	<ion-item ng-repeat="level in levels">
-  		    <a class="item item-avatar" href="#">
+      	<ion-item collection-repeat="level in levels">
+  		    <a class="item item-avatar item-text-wrap" href="#">
   		      <img ng-src="{{ level.image }}">
   		      <h2>{{ level.name }} </h2>
   		    </a>
-		</ion-item>
-	</ion-list>
+		    </ion-item>
+	  </ion-list>
 
    </ion-content>
 </ion-modal-view>

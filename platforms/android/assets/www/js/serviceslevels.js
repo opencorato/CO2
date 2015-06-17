@@ -31,6 +31,19 @@ service.factory('Level', function () {
       }; 
       return colors;
     },
+    getInfo: function (nlevel) {
+
+      var l = _.find(level.items, function (item) {
+        return item.level === nlevel;
+      });
+
+      if (typeof l === 'undefined') {
+        return '';
+      } else {
+        return l.name;
+      };
+
+    },
     items: [{
       image: 'img/airq/level-1.jpg',
       name: 'qualità dell\'aria buona',

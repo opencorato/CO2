@@ -25,7 +25,7 @@ service.factory('AirQuality', function (_, $moment, $http, async, S) {
 
 		get: function (polluting, value, callback) {
 			_calc_aiq(polluting, parseFloat(value), callback);
-		}
+		} 
 
 	};
 

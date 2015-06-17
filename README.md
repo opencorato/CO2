@@ -1,8 +1,6 @@
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/opendatabari/co2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 # CO2
 
-![co2](screenshots/iphone4s/ss_front.png)
+![co2](resource/android/android-banner-1.jpg)
 
 CO2 è una App sviluppata per il monitoraggio dei dati ambientali in Puglia, rilevati dalle centraline [ARPA](http://www.arpa.puglia.it/web/guest/qariainq) distribuite su tutto il [territorio regionale](https://www.arpa.puglia.it/c/document_library/get_file?uuid=68743289-14f7-4f12-aaa3-e3e4087f6675&groupId=13883).
 
@@ -32,13 +30,13 @@ I dati di monitoraggio dell'aria vengono rilevati dalle centraline ARPA più vic
 ![airq8](screenshots/airq/level-8.jpg) Estremamente pericoloso per la salute di qualsiasi individuo.<br />
 
 ## Rilevamento della qualità dell'aria
-![co2](screenshots/iphone4s/iOS Simulator Screen Shot 14.giu.2015 12.05.38.png)
+![co2](screenshots/iphone4s/co2.png)
 
 ## Mappa degli inquinanti
 ![map](screenshots/iphone4s/ss_map.png)
 
 ## Previsioni Meteo
-![weather](screenshots/iphone4s/iOS Simulator Screen Shot 14.giu.2015 12.06.32.png)
+![weather](screenshots/iphone4s/weather.png)
 
 ## Download
 
@@ -54,3 +52,6 @@ La App è stata sviluppata con [IonicFramework](http://www.ionicframework.com)
 ## Autore
 * [OpenPuglia](http://www.openpuglia.org)
 * [Giuseppe Zileni](http://giuseppezileni.github.io) | [twitter](http://www.twitter.com/gzileni) | [linkedin](https://it.linkedin.com/in/giuseppezileni)
+
+## Support
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/opendatabari/co2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
