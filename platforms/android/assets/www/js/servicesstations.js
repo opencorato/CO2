@@ -663,8 +663,8 @@ service.factory('Stations', function (_, $moment, $http, async, S, Geolocation) 
         "UTME": "770356",
         "UTMN": "4451121",
         "UTMZONE": "33",
-        "lat": "40.1738344",
-        "lng": "18.1722211"
+        "lat": "40.1715662",
+        "lng": "18.1688186"
     },
     {
         "prov": "LE",
