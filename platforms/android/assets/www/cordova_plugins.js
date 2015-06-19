@@ -27,6 +27,27 @@ module.exports = [
         "clobbers": [
             "device"
         ]
+    },
+    {
+        "file": "plugins/org.transistorsoft.cordova.background-geolocation/www/BackgroundGeoLocation.js",
+        "id": "org.transistorsoft.cordova.background-geolocation.BackgroundGeoLocation",
+        "clobbers": [
+            "plugins.backgroundGeoLocation"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "id": "cordova-plugin-dialogs.notification",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-dialogs/www/android/notification.js",
+        "id": "cordova-plugin-dialogs.notification_android",
+        "merges": [
+            "navigator.notification"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -36,7 +57,9 @@ module.exports.metadata =
     "com.phonegap.plugins.PushPlugin": "2.4.0",
     "nl.x-services.plugins.socialsharing": "4.3.19-dev",
     "org.apache.cordova.device": "0.3.0",
-    "org.apache.cordova.geolocation": "0.3.12"
+    "org.apache.cordova.geolocation": "0.3.12",
+    "org.transistorsoft.cordova.background-geolocation": "0.3.6",
+    "cordova-plugin-dialogs": "1.1.0"
 }
 // BOTTOM OF METADATA
 });
