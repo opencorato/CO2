@@ -31,40 +31,7 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
       heading: 0,
       speed: 0,
       timestamp: '',
-      isOut: false 
-  };
-
-  var _callback_geolocation_success = function (position) {
-    location.latitude = position.coords.latitude;
-    location.longitude = position.coords.longitude;
-    location.altitude = position.coords.altitude;
-    location.accuracy = position.coords.accuracy;
-    location.altitudeAccuracy = position.coords.altitudeAccuracy;
-    location.heading = position.coords.heading;
-    location.speed = position.coords.speed;
-    location.timestamp = position.timestamp;
-
-    $localstorage.setObject('location', location);
-
-    console.log('Position: ' + JSON.stringify(location));
-  };
-
-  var _callback_geolocation_error = function (error) {
-    console.error('code: '    + error.code    + '\n' +
-                  'message: ' + error.message + '\n');
-    location = {
-      latitude: 0,
-      longitude: 0,
-      altitude: 0,
-      accuracy: 0,
-      altitudeAccuracy: 0,
-      heading: 0,
-      speed: 0,
-      timestamp: '',
-      isOut: false 
-    };
-    
-    $localstorage.setObject('location', location);
+      watchID: 0
   };
 
   var geolocation = {
@@ -72,35 +39,43 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
     ToLL: function (north, east, utmZone) {
       return _ToLL(north, east, utmZone)
     },
-    isDistance: function(location) {
-      var fl = $localstorage.getObject('first_location');
-      var isDistance = geolocation.distance(fl.latitude, fl.longitude, location.latitude, location.longitude) > UTILITY.distance;
-      
-      if (isDistance) {
-        fl.latitude = location.latitude;
-        fl.longitude = location.longitude;
-        $localstorage.setObject('first_location', fl);  
-      };
+    save: function (position) {
+      location.latitude = position.coords.latitude;
+      location.longitude = position.coords.longitude;
+      location.altitude = position.coords.altitude;
+      location.accuracy = position.coords.accuracy;
+      location.altitudeAccuracy = position.coords.altitudeAccuracy;
+      location.heading = position.coords.heading;
+      location.speed = position.coords.speed;
+      location.timestamp = position.timestamp;
 
-      return isDistance;
+      $localstorage.setObject('location', location);
+
+      console.log('Position: ' + JSON.stringify(location));
     },
-    get: function () {
+    error: function (error) {
+      _callback_geolocation_error(error);
+    },
+    get: function (callback_success, callback_error) {
       console.log('get position ...');
-      navigator.geolocation.getCurrentPosition(_callback_geolocation_success, _callback_geolocation_error);
+      navigator.geolocation.getCurrentPosition(callback_success, callback_error);
     },
-    watch: function () {
+    watch: function (callback_success, callback_error) {
       console.log('watching position ...');
+      
       var options = { 
         maximumAge: 3000, 
-        timeout: 5000, 
+        timeout: UTILITY.timeout, 
         enableHighAccuracy: true 
       };
-      var watchId = navigator.geolocation.watchPosition(_callback_geolocation_success, _callback_geolocation_error, options);
+      
+      var watchId = navigator.geolocation.watchPosition(callback_success, callback_error, options);
       console.log('watching ID: ' + watchId);
-      return watchId;
+      // location.watchId = watchId;
     },
     location: function () {
       var location = $localstorage.getObject('location');
+      console.log('get location about ' + location.latitude + ',' + location.longitude);
       return location;
     },
     address: function (callback) {

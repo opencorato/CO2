@@ -47,7 +47,7 @@ angular.module('airq.controllers', [])
 
     if (typeof l !== 'undefined') {
       message = 'Rilevato inquinante ' + p_sel.polluting + ' a ' + Math.round(p_sel.aiq.realvalue) + ' ' + p_sel.aiq.um + ' (aqi: ' + Math.round(p_sel.aiq.value) + ') ' +
-                'a ' + p_sel.station + ',inquinamento ' + p_sel.aiq.type + ',' + l.name;
+                'a ' + p_sel.city + ',inquinamento ' + p_sel.aiq.type + ',' + l.name;
 
       image = SHARE.github + l.image;
       link = SHARE.www;
@@ -397,7 +397,7 @@ angular.module('airq.controllers', [])
 
     if (typeof l !== 'undefined') {
       message = 'Rilevato inquinante ' + item.polluting + ' a ' + Math.round(item.aiq.realvalue) + ' ' + item.aiq.um + ' (aqi: ' + Math.round(item.aiq.value) + ') ' +
-                'a ' + item.station + ',inquinamento ' + item.aiq.type + ',' + l.name;
+                'a ' + item.city + ',inquinamento ' + item.aiq.type + ',' + l.name;
 
       image = SHARE.github + l.image;
       link = SHARE.www;

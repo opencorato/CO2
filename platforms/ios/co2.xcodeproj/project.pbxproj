@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		0BDDF11F54544749A3652CF7 /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E70D7157EA9436B8274AE74 /* IonicKeyboard.m */; };
 		0CDEF18E8DF04AED842D535A /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B92FC640640B4DF7AE4E5294 /* CDVNotification.bundle */; };
@@ -350,6 +351,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 510;
+				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = 53FFLETTG5;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "co2" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -481,6 +487,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -512,6 +519,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "co2/co2-Prefix.pch";
