@@ -79,18 +79,16 @@ filters.filter("weather_data", function ($moment) {
   }
 });
 
-filters.filter("distance", function ($moment) {
+filters.filter("distance", function (Geolocation, GeoJSON) {
   return function (input) {
 
-    var distance = '';
-
-      if (isNaN(input)) {
-        distance = ' ';
-      } else {
-      
-        distance = ' (' + parseInt(input) + ' Km)';
-      }
-
+    if (typeof input !== 'undefined') {
+      var location = Geolocation.location();
+      var distance = Math.round(GeoJSON.distance(location.latitude, location.longitude, input.latitude, input.longitude)) + ' Km';
+    } else {
+      var distance = '';
+    };
+    
     return distance;
  
   }

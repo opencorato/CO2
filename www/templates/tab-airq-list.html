@@ -22,12 +22,13 @@
           <ion-item collection-repeat="airq in airqlist">
             <a class="item item-avatar item-text-wrap" ui-sref="tab.detail({poll: airq.polluting })">
                 <img ng-src=" {{ airq.aiq.level | level_image }} " />
-                <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last:2 }} </i> </h2>
-                <h3>{{ airq.city }} ({{ airq.state }})</h3>
-                <h4><i class="icon ion-ios-location"></i> {{ airq.location.latitude | number:4 }}, {{ airq.location.longitude | number:4 }} ({{ airq.location | distance }})</h4>
-                <h5>{{ airq.aiq.level | level_descr }}</h5>
-                <p ng-if="airq.aiq.type == 'industriale'"><strong>{{ airq.aiq.warning }}x</strong> {{ airq.aiq.text }}, inquinamento {{ airq.aiq.type }}, {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
-                <p ng-if="airq.aiq.type == 'urbano'"><strong> {{ airq.aiq.value | number: 1 }} </strong>inquinamento {{ airq.aiq.type }}, {{ airq.aiq.realvalue }} {{ airq.aiq.um }}</p>
+                <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last:2 }} </i></h2>
+                <h3><i class="icon ion-ios-location"></i> {{ airq.city }} ({{ airq.state }}), {{ airq.location | distance }}</h3>
+                <h4>{{ airq.aiq.level | level_descr }}<br />
+                Inquinamento di tipo {{ airq.aiq.type }}</h4>
+                <p ng-if="airq.aiq.type == 'industriale'"><strong>{{ airq.aiq.warning }} volte sopra il valore limite</strong></p>
+                <p><p ng-if="airq.aiq.type == 'urbano'"><strong>Qualità dell'aria: {{ airq.aiq.value | number: 1 }} </strong></p>
+                <p>Valore misurato: {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
             </a>
           </ion-item>
         </ion-list>

@@ -19,7 +19,7 @@
 
 var service = angular.module('airq.servicesimportio', []);
 
-service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQuality, Stations, pdb) {
+service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQuality, Stations, pdb, Geolocation, GeoJSON) {
 
 	var data_response = [];
 	var db;
@@ -82,6 +82,24 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 					};
 				});
 			});
+		},
+
+		sort: function (data, callback_service) {
+			var location = Geolocation.location();
+
+			if (location.latitude == 0 && location.longitude == 0) {
+				var data_sorted = data;
+			} else {
+				var data_sorted = _.sortBy(data, function (item) {
+	      			// console.log('item sorted: ' + JSON.stringify(item));
+	      			return GeoJSON.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
+	    		});
+			};
+
+    		if (typeof callback_service === 'function') {
+    			callback_service(data_sorted);
+    		};
+
 		},
 
 		// crea legge i dati

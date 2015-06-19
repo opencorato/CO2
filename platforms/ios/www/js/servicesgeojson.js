@@ -62,7 +62,7 @@ service.factory('GeoJSON', function (_, async, S, turf) {
 	    // 
 	    // prendo il punto più vicino
 
-		nearest: function (lat, lng, callback_service) {
+		nearest: function (data, lat, lng, callback_service) {
 
 			geojson_json.create(data, function(err, data_g) {
 

@@ -174,30 +174,10 @@ angular.module('airq.controllers', [])
     var data_sorted;
     var item_nearest;
 
-    /*
-    if (location.latitude != 0 && location.longitude != 0) {
-      console.log('sorting data ...')
-      data_sorted = _.sortBy(data, function (item) {
-        return Geolocation.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
-      });
-    } else {
-      console.log('non sono riuscito a leggere le coordinate geografiche.');
-      data_sorted = data;
-    };
-    */
+    Import.sort(data, function (data_s) {
 
-    GeoJSON.nearest(data, location.latitude, location.longitude, function (err, item) {
-      if (!err) {
-        console.log('stazione più vicina trovata: ' + JSON.stringify(item));
-        item_nearest = item.properties;
-        
-      } else {
-        console.log('errore nel trovare la stazione più vicina');
-        item_nearest = data[0];
-      };
-
+      item_nearest = data_s[0];
       p_sel = item_nearest;
-
       // prendo solo i dati che riguardano la città più vicina
       var data_filtered = _.filter(data, function (item_filtered) {
         return item_filtered.station === item_nearest.station;
@@ -211,7 +191,6 @@ angular.module('airq.controllers', [])
 
       gauge(p_sel);
       last(p_sel);
-
     });
 
     // showSpinner(false);
@@ -395,7 +374,7 @@ angular.module('airq.controllers', [])
 
 .controller('AirQCtrlList', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Import, Level, GeoJSON) {
 
-  Geolocation.watch();
+  // Geolocation.watch();
 
   var data_sorted;
   var data_airq;
@@ -530,40 +509,20 @@ angular.module('airq.controllers', [])
 
     console.log('sorted by location: ' + location.latitude + ',' + location.longitude);
 
-    // ordino i dati in base alla posizione del dispositivo
-    data_sorted = _.sortBy(data, function (item) {
-      // console.log('item sorted: ' + JSON.stringify(item));
-      return GeoJSON.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
+    Import.sort(data, function (data_s) {
+      // filtra i dati per livello >=2
+      var data_filtered = _.filter(data_s, function(item) {
+        return item.aiq.level >= UTILITY.level;
+      });
+
+      console.log('Data data_filtered: ' + _.size(data_filtered));
+      data_airq = data_filtered;
+      $scope.airqlist = data_airq;
+      // confronto con gli ultimi dati
+      $scope.last();
     });
     
-    console.log('Data sorted: ' + _.size(data_sorted));
-
-    // filtra i dati per livello >=2
-    var data_filtered = _.filter(data_sorted, function(item) {
-        return item.aiq.level >= UTILITY.level;
-    });
-
-    console.log('Data data_filtered: ' + _.size(data_filtered));
-
-    // carico tutti i dati tranne il più vicino
-    // data_airq = _.last(data_filtered, _.size(data_filtered)-1);
-
-    data_airq = data_filtered;
-
-    $scope.airqlist = data_airq;
-
-    // calcolo la distanza
-    /*
-    for (var i = 0; i < $scope.airqlist.length; i++) {
-      $scope.$watch('airqlist[' + i + ']', function (newValue, oldValue) {
-        $scope.distance = Geolocation.distance(newValue.location.latitude, newValue.location.longitude);
-      })
-    };
-    */
-
-    // confronto con gli utlimi dati
-    $scope.last();
-      
+    
     $scope.$broadcast('scroll.refreshComplete');
     showSpinner(false);
 

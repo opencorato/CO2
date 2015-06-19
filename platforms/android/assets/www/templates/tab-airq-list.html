@@ -24,7 +24,7 @@
                 <img ng-src=" {{ airq.aiq.level | level_image }} " />
                 <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last:2 }} </i> </h2>
                 <h3>{{ airq.city }} ({{ airq.state }})</h3>
-                <h4><i class="icon ion-ios-location"></i> {{ airq.location.latitude | number:4 }}, {{ airq.location.longitude | number:4 }} ({{ distance | number:2 }} Km)</h4>
+                <h4><i class="icon ion-ios-location"></i> {{ airq.location.latitude | number:4 }}, {{ airq.location.longitude | number:4 }} ({{ airq.location | distance }})</h4>
                 <h5>{{ airq.aiq.level | level_descr }}</h5>
                 <p ng-if="airq.aiq.type == 'industriale'"><strong>{{ airq.aiq.warning }}x</strong> {{ airq.aiq.text }}, inquinamento {{ airq.aiq.type }}, {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
                 <p ng-if="airq.aiq.type == 'urbano'"><strong> {{ airq.aiq.value | number: 1 }} </strong>inquinamento {{ airq.aiq.type }}, {{ airq.aiq.realvalue }} {{ airq.aiq.um }}</p>

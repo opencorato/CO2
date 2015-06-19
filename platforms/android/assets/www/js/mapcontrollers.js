@@ -38,6 +38,8 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	console.log('Params Poll: ' + poll);
 	console.log('Params City: ' + city);
 
+	// Geolocation.watch();
+
 	showSpinner(true);
 	
 	$ionicModal.fromTemplateUrl('templates/poll_descr.html', {

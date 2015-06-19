@@ -19,9 +19,69 @@
 
 angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'airq.controllers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'GaugeMeter', 'frapontillo.gage', 'async', 'S', 'pouchdb'])
 
-.run(function ($ionicPlatform, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush) {
+.run(function ($ionicPlatform, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush, $cordovaBackgroundGeolocation) {
 
   $ionicPlatform.ready(function () {
+
+    //////////////////////////////////////////////
+    // 
+    // Background Geolocation
+    //
+    //
+
+    var location = {
+      latitude: 0,
+      longitude: 0,
+      altitude: 0,
+      accuracy: 0,
+      altitudeAccuracy: 0,
+      heading: 0,
+      speed: 0,
+      timestamp: '',
+      isOut: false 
+    };
+
+    var _callback_geolocation_success = function (position) {
+      location.latitude = position.coords.latitude;
+      location.longitude = position.coords.longitude;
+      location.altitude = position.coords.altitude;
+      location.accuracy = position.coords.accuracy;
+      location.altitudeAccuracy = position.coords.altitudeAccuracy;
+      location.heading = position.coords.heading;
+      location.speed = position.coords.speed;
+      location.timestamp = position.timestamp;
+
+      $localstorage.setObject('location', location);
+
+      console.log('Position: ' + JSON.stringify(location));
+    };
+
+    var _callback_geolocation_error = function (error) {
+      console.error('code: '    + error.code    + '\n' +
+                    'message: ' + error.message + '\n');
+      location = {
+        latitude: 0,
+        longitude: 0,
+        altitude: 0,
+        accuracy: 0,
+        altitudeAccuracy: 0,
+        heading: 0,
+        speed: 0,
+        timestamp: '',
+        isOut: false 
+      };
+      
+      $localstorage.setObject('location', location);
+    };
+
+    var options = {
+    // https://github.com/christocracy/cordova-plugin-background-geolocation#config
+      desiredAccuracy: 100,
+      stationaryRadius: 100,
+      stopOnTerminate: true
+    };
+
+    $cordovaBackgroundGeolocation.configure(options).then(null, _callback_geolocation_error, _callback_geolocation_success);
 
     //////////////////////////////////////////////
     // 
@@ -64,12 +124,6 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
       StatusBar.styleLightContent();
     };
 
-    //////////////////////////////////////////////
-    //
-    // Geolocation
-    //
-    
-    Geolocation.watch();
   });
 })
 
