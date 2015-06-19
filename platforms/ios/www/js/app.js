@@ -29,62 +29,19 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
     //
     //
 
-    var location = {
-      latitude: 0,
-      longitude: 0,
-      altitude: 0,
-      accuracy: 0,
-      altitudeAccuracy: 0,
-      heading: 0,
-      speed: 0,
-      timestamp: '',
-      isOut: false 
-    };
-
-    var _callback_geolocation_success = function (position) {
-      location.latitude = position.coords.latitude;
-      location.longitude = position.coords.longitude;
-      location.altitude = position.coords.altitude;
-      location.accuracy = position.coords.accuracy;
-      location.altitudeAccuracy = position.coords.altitudeAccuracy;
-      location.heading = position.coords.heading;
-      location.speed = position.coords.speed;
-      location.timestamp = position.timestamp;
-
-      $localstorage.setObject('location', location);
-
-      console.log('Position: ' + JSON.stringify(location));
-    };
-
-    var _callback_geolocation_error = function (error) {
-      console.error('code: '    + error.code    + '\n' +
-                    'message: ' + error.message + '\n');
-      location = {
-        latitude: 0,
-        longitude: 0,
-        altitude: 0,
-        accuracy: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        speed: 0,
-        timestamp: '',
-        isOut: false 
-      };
-      
-      $localstorage.setObject('location', location);
-    };
-
+    /*
     var options = {
-    // https://github.com/christocracy/cordova-plugin-background-geolocation#config
+      // https://github.com/christocracy/cordova-plugin-background-geolocation#config
       desiredAccuracy: 100,
       stationaryRadius: 100,
       stopOnTerminate: true
     };
 
-    $cordovaBackgroundGeolocation.configure(options).then(null, _callback_geolocation_error, _callback_geolocation_success);
+    $cordovaBackgroundGeolocation.configure(options).then(null, Geolocation.error, Geolocation.save);
+    */
 
     Geolocation.watch();
-    
+
     //////////////////////////////////////////////
     // 
     // Push notification
@@ -136,7 +93,7 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
 
 .constant('UTILITY', {
   test: false,
-  timeout: 3000,
+  timeout: 60000,
   distance: 1000,
   heatmap: false,
   force_reload: false,

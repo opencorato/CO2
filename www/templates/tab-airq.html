@@ -10,19 +10,17 @@
     <ion-content>
 
         <div class="list card" ng-show="view_data">
-          <div class="item item-avatar item-text-wrap">
-            <img ng-src=" {{ poll_sel.item.aiq.level | level_image }} " />
-            <h2>{{ poll_sel.item.polluting }}</h2>
-            <h3>{{ level_poll | level_descr }}</h3>
-            <h4>{{ level_type }}</h4>
-            <p>{{ poll_sel.item.polluting | polluting }}</p>
-            <label class="item item-input item-select">
-                            <div class="input-label">
-                            Inquinante
-                            </div>
-                            <select ng-model="poll_sel.item" ng-change="changePoll()" ng-options="poll.polluting for poll in polls">
-                            </select>
-                        </label>
+            <div class="item item-avatar item-text-wrap">
+                <img ng-src=" {{ poll_sel.item.aiq.level | level_image }} " />
+                <h2>{{ poll_sel.item.polluting }}</h2>
+                <h3>{{ level_poll | level_descr }}</h3>
+                <h4>{{ level_type }}</h4>
+                <p>{{ poll_sel.item.polluting | polluting }}</p>
+                <label class="item item-input item-select">
+                    <div class="input-label">Inquinante</div>
+                    <select ng-model="poll_sel.item" ng-change="changePoll()" ng-options="poll.polluting for poll in polls">
+                    </select>
+                </label>
             </div>
             <div class="item tabs tabs-secondary tabs-icon-left">
                 <a class="tab-item" ui-sref="tab.city({city: city })">
@@ -33,15 +31,12 @@
                   <i class="icon ion-share"></i>
                   Share
                 </a>
-                <!--
-                <a class="tab-item" href="#">
-                  <i class="icon ion-chatbox"></i>
-                  Comment
+                <a class="tab-item" href="#" ng-show="view_error">
+                  <i class="icon ion-alert-circled"></i>
+                  {{ error }}
                 </a>
-                
-                -->
-            </div>
-          </div>
+            </div>          
+        </div>
 
           <!--
           <div class="item item-body">
@@ -87,7 +82,8 @@
                  format-number="{{ formatNumber }}"
                  human-friendly="{{ humanFriendly }}" 
                  human-friendly-decimal="{{ humanFriendlyDecimal }}"
-                 text-renderer="textRenderer()">
+                 text-renderer="textRenderer()"
+                 ng-show="view_data">
             </div>
             
         

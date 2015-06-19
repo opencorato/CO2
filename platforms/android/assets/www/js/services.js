@@ -16,11 +16,10 @@
 // airQ App - Services Main
 //
 //
+// (-- deprecated --)
 
 var service = angular.module('airq.services', []);
 
-
-// (-- deprecated --)
 service.factory('AirQ', function ($http, _, AIRQ, UTILITY, $localstorage, $moment) {
 
   var data_airq;

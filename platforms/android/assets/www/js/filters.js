@@ -196,17 +196,20 @@ filters.filter("level_descr", function (_, Level) {
 filters.filter("level_image", function (Level) {
   return function (input) {
 
-    console.log('level color: ' + input);
+    // console.log('level color: ' + input);
+    var image = '';
 
-    var l = _.find(Level.items, function (item) {
-      return item.level === input;
-    });
+    if (typeof input !== 'undefined') {
+      var l = _.find(Level.items, function (item) {
+        return item.level === input;
+      });
 
-    if (typeof l === 'undefined') {
-      return '';
-    } else {
-      return l.image;
+      if (typeof l !== 'undefined') {
+        image = l.image;
+      };
     };
+
+    return image;
 
   }
 });

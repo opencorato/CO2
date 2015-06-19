@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0BDDF11F54544749A3652CF7 /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E70D7157EA9436B8274AE74 /* IonicKeyboard.m */; };
 		0CDEF18E8DF04AED842D535A /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B92FC640640B4DF7AE4E5294 /* CDVNotification.bundle */; };
@@ -55,6 +54,9 @@
 		C4CA697A6F304D3C8AFE576A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598FDEF749704FB5A2A28A0E /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		EFB32DAB68054061A5305737 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10CC5089762349DD9DECEDBC /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		940BE104959E43A2814B6864 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CEB271EA5E949CF85DE5321 /* MBProgressHUD.m */; };
+		9664DC83BE4A4356A0DA167A /* ProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA19611876B4981AB8DE132 /* ProgressIndicator.m */; };
+		898B2D3055394A818317937E /* ProgressIndicator.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 162586FAC36B41A4927895F4 /* ProgressIndicator.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +144,11 @@
 		EBFCBE42E2D84028A86B6A83 /* UIWebViewExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIWebViewExtension.h; path = com.ionic.keyboard/UIWebViewExtension.h; sourceTree = "<group>"; };
 		ED90791E7D0E43F1BE4F8A12 /* AudioToolbox.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = co2/config.xml; sourceTree = "<group>"; };
+		6CEB271EA5E949CF85DE5321 /* MBProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "MBProgressHUD.m"; path = "org.pbernasconi.progressindicator/MBProgressHUD.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		9EA19611876B4981AB8DE132 /* ProgressIndicator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "ProgressIndicator.m"; path = "org.pbernasconi.progressindicator/ProgressIndicator.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		7DBD6B97A42946D3BCFC5DE5 /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MBProgressHUD.h"; path = "org.pbernasconi.progressindicator/MBProgressHUD.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		FF8EDAB926AF491895E45819 /* ProgressIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ProgressIndicator.h"; path = "org.pbernasconi.progressindicator/ProgressIndicator.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		162586FAC36B41A4927895F4 /* ProgressIndicator.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "ProgressIndicator.bundle"; path = "ProgressIndicator.bundle"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +227,7 @@
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* co2-Info.plist */,
 				B92FC640640B4DF7AE4E5294 /* CDVNotification.bundle */,
+				162586FAC36B41A4927895F4 /* ProgressIndicator.bundle */,
 			);
 			name = Resources;
 			path = co2/Resources;
@@ -269,6 +277,10 @@
 				7340503E9EEF482598766767 /* CDVNotification.h */,
 				0DE222457CE34ED583A4CF9D /* CDVBackgroundGeoLocation.m */,
 				3674BBC907AC4DB3A84C6D17 /* CDVBackgroundGeoLocation.h */,
+				6CEB271EA5E949CF85DE5321 /* MBProgressHUD.m */,
+				9EA19611876B4981AB8DE132 /* ProgressIndicator.m */,
+				7DBD6B97A42946D3BCFC5DE5 /* MBProgressHUD.h */,
+				FF8EDAB926AF491895E45819 /* ProgressIndicator.h */,
 			);
 			name = Plugins;
 			path = co2/Plugins;
@@ -428,6 +440,7 @@
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
 				0CDEF18E8DF04AED842D535A /* CDVNotification.bundle in Resources */,
+				898B2D3055394A818317937E /* ProgressIndicator.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +481,8 @@
 				13899F6987C14385A51C370E /* CDVLocation.m in Sources */,
 				5580D517693D48F1BA63D444 /* CDVNotification.m in Sources */,
 				1C4C1F1B468F4B19806B3D95 /* CDVBackgroundGeoLocation.m in Sources */,
+				940BE104959E43A2814B6864 /* MBProgressHUD.m in Sources */,
+				9664DC83BE4A4356A0DA167A /* ProgressIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

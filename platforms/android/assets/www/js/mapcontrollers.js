@@ -85,7 +85,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	});
 	
 	$scope.$on('$ionicView.beforeEnter', function() {
-        $scope.refresh();
+    	$scope.refresh();
     });
 
     function showSpinner (view, message) {
@@ -104,6 +104,20 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	      $ionicLoading.hide();
 	    }
   	};
+
+  	var _callback_geolocation_success = function (position) {
+	    showSpinner(true);
+	    console.log('getting position: ' +  JSON.stringify(position));
+	    Geolocation.save(position);
+	    $scope.refresh();
+	};
+
+	var _callback_geolocation_error = function (error) {
+	    console.error('code: '    + error.code    + '\n' +
+	                  'message: ' + error.message + '\n');
+	};
+
+  	Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
 	$scope.refresh = function () {
 
@@ -144,7 +158,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 		    };
 
 		    console.log('n. elements filtered: ' + _.size(poll_data));
-		    console.log('elements filtered: ' + JSON.stringify(poll_data));
+		    // console.log('elements filtered: ' + JSON.stringify(poll_data));
 
 			GeoJSON.create(poll_data, function (err, data_geojson) {
 				geojson = data_geojson;
@@ -158,6 +172,8 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	      showSpinner(false);
 
 	    });
+
+	    showSpinner(false);
 	
 	};
 
@@ -168,7 +184,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 
 		leafletData.getMap('map').then(function(map) {
 
-			map.spin(true);
+			// map.spin(true);
 
 			$scope.initMap(map, location.latitude, location.longitude);
 
@@ -179,7 +195,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 			        };
 			    },
 			    onEachFeature: function (feature, layer) {
-			    	console.log('Features: ' + JSON.stringify(feature));
+			    	// console.log('Features: ' + JSON.stringify(feature));
 			    	layer.bindPopup(_html_feature(feature.properties, Geolocation, Level));
 			    },
 			    pointToLayer: function ( feature, latlng ) {
@@ -200,7 +216,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 
             map.invalidateSize();
 
-            map.spin(false);
+            // map.spin(false);
 
             showSpinner(false);
 

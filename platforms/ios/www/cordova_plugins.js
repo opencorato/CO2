@@ -64,6 +64,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
+        "id": "org.pbernasconi.progressindicator.ProgressIndicator",
+        "clobbers": [
+            "ProgressIndicator"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-dialogs/www/notification.js",
         "id": "cordova-plugin-dialogs.notification",
         "merges": [
@@ -80,6 +87,7 @@ module.exports.metadata =
     "org.apache.cordova.device": "0.3.0",
     "org.apache.cordova.geolocation": "0.3.12",
     "org.transistorsoft.cordova.background-geolocation": "0.3.6",
+    "org.pbernasconi.progressindicator": "1.1.0",
     "cordova-plugin-dialogs": "1.1.0"
 }
 // BOTTOM OF METADATA

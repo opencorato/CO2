@@ -22,7 +22,7 @@ angular.module('airq.controllers', [])
 /////////////////////////////
 // Air Quality Controller
 //
-.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Level, Import, GeoJSON, $ionicActionSheet, $cordovaSocialSharing, SHARE) {
+.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $localstorage, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Level, Import, GeoJSON, $ionicActionSheet, $cordovaSocialSharing, SHARE) {
 
 	// Geolocation.watch();
 
@@ -33,6 +33,7 @@ angular.module('airq.controllers', [])
   var p_sel;
 
   showSpinner(true);
+
   $scope.view_data = false;
 
   function _share (type) {
@@ -115,7 +116,7 @@ angular.module('airq.controllers', [])
      hideSheet();
    }, 2000);
 
- };
+  };
   
   $ionicModal.fromTemplateUrl('templates/info.html', {
       scope: $scope,
@@ -299,6 +300,25 @@ angular.module('airq.controllers', [])
     return value;
   };
 
+  ///////////////////////
+  //
+  // Geolocation
+  //
+
+  var _callback_geolocation_success = function (position) {
+    showSpinner(true);
+    console.log('getting position: ' +  JSON.stringify(position));
+    Geolocation.save(position);
+    $scope.refresh();
+  };
+
+  var _callback_geolocation_error = function (error) {
+    console.error('code: '    + error.code    + '\n' +
+                  'message: ' + error.message + '\n');
+  };
+
+  Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
+
   $scope.refresh = function () {
 
     showSpinner(true);
@@ -333,8 +353,8 @@ angular.module('airq.controllers', [])
 
     Import.last(1, function (err, data_last) {
 
-      console.log('last_data n.:' + _.size(data_last.dataset));
-      console.log('check last value by ' + JSON.stringify(item));
+      // console.log('last_data n.:' + _.size(data_last.dataset));
+      // console.log('check last value by ' + JSON.stringify(item));
       
       var item_poll_near = _.find(data_last.dataset, function (item_data) {
           //console.log('item last: ' + JSON.stringify(item));
@@ -369,10 +389,6 @@ angular.module('airq.controllers', [])
 
   };
 
-  $timeout(function() {
-    $scope.refresh();
-  }, UTILITY.timeout);
-
 })
 
 .controller('AirQCtrlList', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Import, Level, GeoJSON, $cordovaSocialSharing, SHARE) {
@@ -384,6 +400,20 @@ angular.module('airq.controllers', [])
   var location;
 
   showSpinner(true);
+
+  var _callback_geolocation_success = function (position) {
+    showSpinner(true);
+    console.log('getting position: ' +  JSON.stringify(position));
+    Geolocation.save(position);
+    $scope.refresh();
+  };
+
+  var _callback_geolocation_error = function (error) {
+    console.error('code: '    + error.code    + '\n' +
+                  'message: ' + error.message + '\n');
+  };
+
+  Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
   $scope.share = function (type, item) {
 
@@ -523,7 +553,7 @@ angular.module('airq.controllers', [])
 
             $scope.last_value = value_l / value_r;
 
-            console.log('item founded: ' + JSON.stringify(item_poll) + '\n Last Value: ' + $scope.last_value);
+            // console.log('item founded: ' + JSON.stringify(item_poll) + '\n Last Value: ' + $scope.last_value);
 
             if (value_l > value_r) {
               $scope.icon_value = 'icon ion-ios-arrow-thin-down';
@@ -566,10 +596,6 @@ angular.module('airq.controllers', [])
 
   };
 
-  $timeout(function() {
-    $scope.refresh();
-  }, UTILITY.timeout);
-
 })
 
 /////////////////////////////
@@ -580,7 +606,19 @@ angular.module('airq.controllers', [])
   var weather;
   var location;
 
-  // Geolocation.watch();
+  var _callback_geolocation_success = function (position) {
+    showSpinner(true);
+    console.log('getting position: ' +  JSON.stringify(position));
+    Geolocation.save(position);
+    $scope.refresh();
+  };
+
+  var _callback_geolocation_error = function (error) {
+    console.error('code: '    + error.code    + '\n' +
+                  'message: ' + error.message + '\n');
+  };
+
+  Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
   $scope.showSpinner = function() {
     $ionicLoading.show({
@@ -627,7 +665,7 @@ angular.module('airq.controllers', [])
   });
   
   $scope.$on('$ionicView.beforeEnter', function() {
-    $scope.refresh();
+    // $scope.refresh();
   });
 
   $scope.refresh = function () {
@@ -648,29 +686,5 @@ angular.module('airq.controllers', [])
     $scope.hideSpinner();
   };
 
-  $timeout(function() {
-    $scope.refresh();
-  }, UTILITY.timeout);
-})
+});
 
-function _isOut(location_start, location, DIST, Geolocation, callback) {
-
-  if (location_start.latitude === 0) {
-      
-      location_start.latitude = location.latitude;
-      location_start.longitude = location.longitude;
-      
-      if (typeof callback === 'function') {
-        callback(location_start, true, 0);
-      };
-
-    } else {
-      // controllo se la distanza dall'ultima coordinata è maggiore di 500 metri
-      var distance = Geolocation.distance(location_start.latitude, location_start.longitude, location.latitude, location.longitude, Geolocation);
-
-      if (typeof callback === 'function') {
-        callback(location, distance >= DIST, distance);
-      };
-
-    }
-};
