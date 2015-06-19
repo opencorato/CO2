@@ -83,6 +83,8 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
 
     $cordovaBackgroundGeolocation.configure(options).then(null, _callback_geolocation_error, _callback_geolocation_success);
 
+    Geolocation.watch();
+    
     //////////////////////////////////////////////
     // 
     // Push notification

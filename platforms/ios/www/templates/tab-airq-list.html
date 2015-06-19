@@ -16,7 +16,7 @@
 
     <ion-content class="padding has-header">
 
-        <ion-refresher on-refresh="refresh()" pulling-text="Pull to Reload"></ion-refresher>
+        <ion-refresher on-refresh="refresh()" pulling-text="Pull to Refresh"></ion-refresher>
 
         <ion-list>
           <ion-item collection-repeat="airq in airqlist">
@@ -30,6 +30,11 @@
                 <p><p ng-if="airq.aiq.type == 'urbano'"><strong>Qualità dell'aria: {{ airq.aiq.value | number: 1 }} </strong></p>
                 <p>Valore misurato: {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
             </a>
+            <div class="button-bar">
+              <a class="button button-clear button-positive" ng-click="share('facebook', airq)"><i class="icon ion-social-facebook"></i></a>
+              <a class="button button-clear button-positive" ng-click="share('twitter', airq)"><i class="icon ion-social-twitter"></i></a>
+              <a class="button button-clear button-positive" ng-click="share('whatsapp', airq)"><i class="icon ion-social-whatsapp"></i></a>
+            </div>
           </ion-item>
         </ion-list>
 

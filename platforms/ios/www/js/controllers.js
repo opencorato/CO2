@@ -171,6 +171,7 @@ angular.module('airq.controllers', [])
 
     showSpinner(true);
 
+    location = Geolocation.location();
     var data_sorted;
     var item_nearest;
 
@@ -205,6 +206,8 @@ angular.module('airq.controllers', [])
   };
 
   function gauge (item) {
+            
+    location = Geolocation.location();
 
     /*
     {
@@ -267,7 +270,7 @@ angular.module('airq.controllers', [])
     $scope.levelColors = Level.getColors();
 
     $scope.noGradient = false;
-    $scope.label = item.station;
+    $scope.label = item.city;
     $scope.labelFontColor = item.aiq.color;
     $scope.startAnimationTime = 1000;
     $scope.startAnimationType = 'linear';
@@ -372,7 +375,7 @@ angular.module('airq.controllers', [])
 
 })
 
-.controller('AirQCtrlList', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Import, Level, GeoJSON) {
+.controller('AirQCtrlList', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Import, Level, GeoJSON, $cordovaSocialSharing, SHARE) {
 
   // Geolocation.watch();
 
@@ -381,6 +384,41 @@ angular.module('airq.controllers', [])
   var location;
 
   showSpinner(true);
+
+  $scope.share = function (type, item) {
+
+    var message = '';
+    var image = '';
+    var link = '';
+
+    var l = _.find(Level.items, function (item_find) {
+      return item_find.level === item.aiq.level;
+    });
+
+    if (typeof l !== 'undefined') {
+      message = 'Rilevato inquinante ' + item.polluting + ' a ' + Math.round(item.aiq.realvalue) + ' ' + item.aiq.um + ' (aqi: ' + Math.round(item.aiq.value) + ') ' +
+                'a ' + item.station + ',inquinamento ' + item.aiq.type + ',' + l.name;
+
+      image = SHARE.github + l.image;
+      link = SHARE.www;
+    };
+
+    console.log(message + '\n' + image + '\n' + link);
+
+    if (type === 'facebook') {
+      $cordovaSocialSharing
+        .shareViaFacebook(message, image, link)
+        .then(_success_share, _error_share);
+    } else if (type === 'twitter') {
+      $cordovaSocialSharing
+        .shareViaTwitter(message, image, link)
+        .then(_success_share, _error_share);
+    } else if (type === 'whatsapp') {
+      $cordovaSocialSharing
+      .shareViaWhatsApp(message, image, link)
+      .then(_success_share, _error_share);
+    }
+  };
   
   function showSpinner (view, message) {
 
