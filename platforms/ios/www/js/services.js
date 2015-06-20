@@ -76,33 +76,20 @@ service.factory('AirQ', function ($http, _, AIRQ, UTILITY, $localstorage, $momen
 service.factory('Weather', function ($http, _, AIRQ, $localstorage, $moment, Geolocation) {
 
   var weather_service = {
-    set: function (data, callback) {
-      $localstorage.setObject('weather', data);
-      if (typeof callback === 'function') {
-        callback(); 
-      };
-    },
+    
     get: function (callback) {
       
-      var location = $localstorage.getObject('location');
-      console.log(JSON.stringify(location));
-      var weather = $localstorage.getObject('meteo');
-      console.log(JSON.stringify(weather));
+      var location = Geolocation.location();
       
-      if (Geolocation.isDistance(location) || (typeof weather !== 'undefined')) {
-        var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + location.latitude + '&lon=' + location.longitude + '&units=metric&callback=JSON_CALLBACK';
-        console.log('getting weather by ' + url);
-        _get($http, url, function (err, data) {
-          $localstorage.setObject('meteo', data);
-          if (typeof callback === 'function') {
-            callback(err, data);  
-          };  
-        });
-      } else {
+      var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + location.latitude + '&lon=' + location.longitude + '&units=metric&callback=JSON_CALLBACK';
+      console.log('getting weather by ' + url);
+      
+      _get($http, url, function (err, data) {
         if (typeof callback === 'function') {
-          callback(false, weather);  
-        };
-      }
+          callback(err, data);  
+        };  
+      });
+      
     } 
   };
 

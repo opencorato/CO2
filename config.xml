@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.co2" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>co2</name>
+<widget id="com.ionicframework.co2" version="1.1.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>CO2</name>
   <description>
         Una App OpenPuglia per il monitoraggio della qualità dell'aria
     </description>
   <author email="giuseppe.zileni@gmail.com" href="http://giuseppezileni.github.io">
-      @gzileni
+      Giuseppe Zileni
     </author>
   <content src="index.html"/>
   <access origin="*"/>

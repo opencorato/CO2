@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest android:hardwareAccelerated="true" android:versionCode="10103" android:versionName="1.1.3" package="com.ionicframework.co2" xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest android:hardwareAccelerated="true" android:versionCode="10104" android:versionName="1.1.4" package="com.ionicframework.co2" xmlns:android="http://schemas.android.com/apk/res/android">
     <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <application android:hardwareAccelerated="true" android:icon="@drawable/icon" android:label="@string/app_name" android:supportsRtl="true">
         <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/activity_name" android:launchMode="singleTop" android:name="MainActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:windowSoftInputMode="adjustResize">
             <intent-filter android:label="@string/launcher_name">
@@ -18,7 +17,6 @@
             </intent-filter>
         </receiver>
         <service android:name="com.plugin.gcm.GCMIntentService" />
-        <service android:enabled="true" android:name="com.tenforwardconsulting.cordova.bgloc.LocationUpdateService" android:process=":remote" />
     </application>
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="21" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,7 +27,4 @@
     <permission android:name="com.ionicframework.co2.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="com.ionicframework.co2.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 </manifest>

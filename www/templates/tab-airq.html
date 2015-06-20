@@ -9,21 +9,23 @@
 
     <ion-content>
 
-        <div class="list card" ng-show="view_data">
+        <div class="list card">
+            
             <div class="item item-avatar item-text-wrap">
-                <img ng-src=" {{ poll_sel.item.aiq.level | level_image }} " />
-                <h2>{{ poll_sel.item.polluting }}</h2>
+                <img ng-show="view_data" ng-src=" {{ level_poll | level_image }} " />
+                <h2>{{ poll_sel.item.name }}</h2>
                 <h3>{{ level_poll | level_descr }}</h3>
                 <h4>{{ level_type }}</h4>
-                <p>{{ poll_sel.item.polluting | polluting }}</p>
+                <p>{{ poll_sel.item.description }}</p>
                 <label class="item item-input item-select">
                     <div class="input-label">Inquinante</div>
-                    <select ng-model="poll_sel.item" ng-change="changePoll()" ng-options="poll.polluting for poll in polls">
+                    <select ng-model="poll_sel.item" ng-change="changePoll()" ng-options="poll.name for poll in polls">
                     </select>
                 </label>
             </div>
+
             <div class="item tabs tabs-secondary tabs-icon-left">
-                <a class="tab-item" ui-sref="tab.city({city: city })">
+                <a class="tab-item" ui-sref="tab.detail({poll: poll_sel.item.name })">
                   <i class="icon ion-ios-location"></i>
                   Mappa
                 </a>

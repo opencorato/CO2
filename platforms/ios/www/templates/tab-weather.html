@@ -14,12 +14,19 @@
 
   <ion-content overflow-scroll="false" class="has-header">
 
+    <ion-refresher on-refresh="refresh()" pulling-text="Pull to Refresh"></ion-refresher>
+
     <ion-list>
+      <div>
+        <p ng-show="view_error"><i class="icon ion-alert-circled"></i> {{ error }}</p>
+      </div>
       <ion-item collection-repeat="weather in weathers">
         <a class="item item-avatar" href="#" ng-repeat="weather in weathers">
             <img ng-src=" {{ weather.weather | weather }}">
             <h2> {{ weather.dt | weather_data }} </h2>
-            <p><i class="ion-thermometer"> {{ weather.main.temp | number : 0}} C° </i> <i class="ion-flag"></i> {{ weather.wind | wind }} </p>
+            <p>
+              <i class="ion-thermometer"> {{ weather.main.temp | number : 0}} C° </i> <i class="ion-flag"></i> {{ weather.wind | wind }} 
+            </p>
         </a>
       </ion-item>
     </ion-list>

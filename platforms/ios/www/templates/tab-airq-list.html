@@ -19,23 +19,26 @@
         <ion-refresher on-refresh="refresh()" pulling-text="Pull to Refresh"></ion-refresher>
 
         <ion-list>
-          <ion-item collection-repeat="airq in airqlist">
-            <a class="item item-avatar item-text-wrap" ui-sref="tab.detail({poll: airq.polluting })">
-                <img ng-src=" {{ airq.aiq.level | level_image }} " />
-                <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last:2 }} </i></h2>
-                <h3><i class="icon ion-ios-location"></i> {{ airq.city }} ({{ airq.state }}), {{ airq.location | distance }}</h3>
-                <h4>{{ airq.aiq.level | level_descr }}<br />
-                Inquinamento di tipo {{ airq.aiq.type }}</h4>
-                <p ng-if="airq.aiq.type == 'industriale'"><strong>{{ airq.aiq.warning }} volte sopra il valore limite</strong></p>
-                <p><p ng-if="airq.aiq.type == 'urbano'"><strong>Qualità dell'aria: {{ airq.aiq.value | number: 1 }} </strong></p>
-                <p>Valore misurato: {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
-            </a>
-            <div class="button-bar">
-              <a class="button button-clear button-positive" ng-click="share('facebook', airq)"><i class="icon ion-social-facebook"></i></a>
-              <a class="button button-clear button-positive" ng-click="share('twitter', airq)"><i class="icon ion-social-twitter"></i></a>
-              <a class="button button-clear button-positive" ng-click="share('whatsapp', airq)"><i class="icon ion-social-whatsapp"></i></a>
+            <div>
+            <p ng-show="view_error"><i class="icon ion-alert-circled"></i> {{ error }}</p>
             </div>
-          </ion-item>
+            <ion-item collection-repeat="airq in airqlist">
+                <a class="item item-avatar item-text-wrap" ui-sref="tab.detail({poll: airq.polluting })">
+                    <img ng-src=" {{ airq.aiq.level | level_image }} " />
+                    <h2>{{ airq.polluting }} <i class="{{ icon_value }}"> {{ last_value | last:2 }} </i></h2>
+                    <h3><i class="icon ion-ios-location"></i> {{ airq.city }} ({{ airq.state }}), {{ airq.location | distance }}</h3>
+                    <h4>{{ airq.aiq.level | level_descr }}<br />
+                    Inquinamento di tipo {{ airq.aiq.type }}</h4>
+                    <p ng-if="airq.aiq.type == 'industriale'"><strong>{{ airq.aiq.warning }} volte sopra il valore limite</strong></p>
+                    <p><p ng-if="airq.aiq.type == 'urbano'"><strong>Qualità dell'aria: {{ airq.aiq.value | number: 1 }} </strong></p>
+                    <p>Valore misurato: {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
+                </a>
+                <div class="button-bar">
+                  <a class="button button-clear button-positive" ng-click="share('facebook', airq)"><i class="icon ion-social-facebook"></i></a>
+                  <a class="button button-clear button-positive" ng-click="share('twitter', airq)"><i class="icon ion-social-twitter"></i></a>
+                  <a class="button button-clear button-positive" ng-click="share('whatsapp', airq)"><i class="icon ion-social-whatsapp"></i></a>
+                </div>
+            </ion-item>
         </ion-list>
 
         <ion-infinite-scroll on-infinite="refresh()" ng-if="total > page" immediate-check="false"></ion-infinite-scroll>

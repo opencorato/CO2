@@ -19,7 +19,7 @@
 
 var service = angular.module('airq.servicesimportio', []);
 
-service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQuality, Stations, pdb, Geolocation, GeoJSON) {
+service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQuality, Stations, pdb, Geolocation, GeoJSON, UTILITY, DB) {
 
 	var data_response = [];
 	var db;
@@ -48,7 +48,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 				nDays = days;
 			};
 
-			pdb.open('airq', function (db_istance) {
+			pdb.open(DB.name, function (db_istance) {
 				
 				db = db_istance;
 
@@ -103,7 +103,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		},
 
 		// crea legge i dati
-		start: function (callback_service) {
+		start: function (callback_service, callback_message) {
 
 			var date_now = $moment().format("YYYYMMDD");
   			tag = date_now;
@@ -117,12 +117,21 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    // apro il database
   				
 			    function (callback_root) {
-			    	console.log('apro il database');
-			    	// controllo il database dei dati
-  					pdb.open('airq', function (db_istance) {
-  						db = db_istance;
-  						callback_root(false, 'next');
-  					});
+
+			    	if (typeof callback_message === 'function') {
+						callback_message(true, 'connect to data ...', 0);
+					};
+
+			    	if (!UTILITY.force) {
+				    	console.log('apro il database');
+				    	// controllo il database dei dati
+	  					pdb.open(DB.name, function (db_istance) {
+	  						db = db_istance;
+	  						callback_root(false, 'next');
+	  					});
+	  				} else {
+	  					callback_root(false, 'next');	
+	  				}
 			    },
 
 			    /////////////////////////////////////////
@@ -131,17 +140,25 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
   				
 			    function (callback_root) {
 
-			    	console.log('controllo il documento by ID: ' + tag);
-			    	
-			    	pdb.get(db, tag, function(err, data) {
-			    		if (!err) {
-			    			data_json = data;
-			    			callback_root(false, 'next');
-			    		} else {
-			    			console.log('non ho trovato il documento.');
-			    			callback_root(false, 'next');
-			    		};
-			    	});
+			    	if (typeof callback_message === 'function') {
+						callback_message(true, 'reading data ...', 0);
+					};
+
+			    	if (!UTILITY.force) {
+				    	console.log('controllo il documento by ID: ' + tag);
+				    	
+				    	pdb.get(db, tag, function(err, data) {
+				    		if (!err) {
+				    			data_json = data;
+				    			callback_root(false, 'next');
+				    		} else {
+				    			console.log('non ho trovato il documento.');
+				    			callback_root(false, 'next');
+				    		};
+				    	});
+				    } else {
+				    	callback_root(false, 'next');	
+				    }
 			    },
 
 			    /////////////////////////////////////////
@@ -150,7 +167,11 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
   				
   				function (callback_root) {
 
-  					if (data_json._rev === '') {
+  					if (typeof callback_message === 'function') {
+						callback_message(true, 'importing data ...', 0);
+					};
+
+  					if (data_json._rev === '' || UTILITY.force) {
 
   						console.log('importio start by id: ' + tag);
 	  				
@@ -188,6 +209,10 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 					var poll = '';
 					var provincia = '';
 
+					if (typeof callback_message === 'function') {
+						callback_message(true, 'start loading ...', _.size(data_response));
+					};
+
 					if (data_json._rev === '') {
 
 						async.each(data_response, function (item, callback) {
@@ -207,6 +232,8 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 						        longitude: 0
 						      }
 						    };
+
+						    // console.log('Item: ' + JSON.stringify(item));
 
 						    if (typeof item.data !== 'undefined') {
 						      data_json.source.date = item.data;
@@ -247,22 +274,27 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 						        };
 						      };
 
-						      data_item.value = parseFloat(item.valore);
+						      data_item.value = parseFloat(item['valore/_source']);
 						      
 						      data_item.day = parseInt(item.giorni);
 						      
 						      data_item.station = centralina;
 						      data_item.city = item.comune;
 						      data_item.state = provincia;
-						      
+
 						      // inquinante
 						      data_item.polluting = poll;
+
+						      if (typeof callback_message === 'function') {
+						      	var message = poll + ': ' + data_item.city;
+								callback_message(true, message, i++);
+							  };
 
 						      data_json.dataset.push(data_item);
 
 						    };
 
-			    			callback();
+						    callback();
 
 			  			}, function (err) {
 			  				callback_root(err, 'next');
@@ -277,6 +309,10 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    // filtro i dati
   				
   				function (callback_root) {
+
+  					if (typeof callback_message === 'function') {
+			    		callback_message(true, 'optimizing data', 0);
+					};
 
   					if (data_json._rev === '') {
 				        console.log('Filtering data ... ');
@@ -306,6 +342,10 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			      
 			    function (callback_root) {
 
+			    	if (typeof callback_message === 'function') {
+			    		callback_message(true, 'calculating air quality', 0);
+					};
+
 			    	if (data_json._rev === '') {
 				    	console.log('start calculating air quality ...');
 					  	async.each(data_json.dataset, function (item, callback) {
@@ -327,6 +367,10 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			      
 			    function (callback_root) {
 
+			    	if (typeof callback_message === 'function') {
+			    		callback_message(true, 'reading stations ...', 0);
+					};
+
 			    	if (data_json._rev === '') {
 	        			console.log('init setting locations airq ...');
 	        
@@ -347,15 +391,30 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    
 			    function (err, results) {
 
+			    	if (typeof callback_message === 'function') {
+			    		callback_message(true, 'saving data', 0);
+					};
+
 			    	// salvo i dati nel database
 			    	if (data_json._rev === '') {
-			    		pdb.put(db, data_json, function (err, response) {
-			    			//console.log('Response: ' + JSON.stringify(response));
-			    			if (typeof callback_service === 'function') {
-  								callback_service(err, data_json);
-  							};
-			    		});
+			    		if (typeof db === 'undefined') {
+			    			pdb.open(DB.name, function (db_istance) {
+			    				db = db_istance;
+			    				if (typeof callback_message === 'function') {
+			    					callback_message(false, 'success.', 0);
+								};
+			    				_save(pdb, db, data_json, callback_service);
+			    			});
+			    		} else {
+			    			if (typeof callback_message === 'function') {
+			    				callback_message(false, 'success.', 0);
+							};
+			    			_save(pdb, db, data_json, callback_service);
+			    		};
 			    	} else {
+			    		if (typeof callback_message === 'function') {
+			    			callback_message(false, 'success.', 0);
+						};
 			    		//console.log('Data Document Saved: ' + JSON.stringify(data_json));
 			    		if (typeof callback_service === 'function') {
   							callback_service(err, data_json);
@@ -368,3 +427,12 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 	return importio_json;
 
 });
+
+function _save(pdb, db, data, callback) {
+	pdb.put(db, data, function (err, response) {
+		//console.log('Response: ' + JSON.stringify(response));
+		if (typeof callback_service === 'function') {
+			callback_service(err, data);
+		};
+	});
+};

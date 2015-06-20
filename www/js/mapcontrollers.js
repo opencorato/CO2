@@ -106,10 +106,10 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
   	};
 
   	var _callback_geolocation_success = function (position) {
-	    showSpinner(true);
+	    // showSpinner(true);
 	    console.log('getting position: ' +  JSON.stringify(position));
 	    Geolocation.save(position);
-	    $scope.refresh();
+	    // $scope.refresh();
 	};
 
 	var _callback_geolocation_error = function (error) {
@@ -171,11 +171,15 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 
 	      showSpinner(false);
 
-	    });
+	    }, _callback_message);
 
 	    showSpinner(false);
 	
 	};
+
+	function _callback_message(open, message, counter) {
+    	showSpinner(open, message);
+  	};
 
     // visualizzo i dati geojson
 	$scope.geojson = function () {

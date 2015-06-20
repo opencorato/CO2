@@ -96,7 +96,7 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   timeout: 60000,
   distance: 1000,
   heatmap: false,
-  force_reload: false,
+  force: false,
   level: 2
 })
 
@@ -114,7 +114,7 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
 })
 
 .constant('DB', {
-  name: 'airq'  // nome del database
+  name: 'co2'  // nome del database
 })
 
 // dati di importIO 
@@ -230,7 +230,7 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   .state('tab.city', {
     url: '/airq/:city',
     views: {
-      'tab-airq-list': {
+      'tab-airq': {
         templateUrl: 'templates/tab-airq-detail.html',
         controller: 'MapCtrl'
       }
@@ -240,6 +240,10 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   .state('tab.detail', {
     url: '/airq/:poll',
     views: {
+      'tab-airq': {
+        templateUrl: 'templates/tab-airq-detail.html',
+        controller: 'MapCtrl'
+      },
       'tab-airq-list': {
         templateUrl: 'templates/tab-airq-detail.html',
         controller: 'MapCtrl'

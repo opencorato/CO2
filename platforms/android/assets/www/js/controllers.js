@@ -32,9 +32,17 @@ angular.module('airq.controllers', [])
   var gauges = [];
   var p_sel;
 
-  showSpinner(true);
-
   $scope.view_data = false;
+  $scope.view_error = false;
+    
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $scope.refresh();
+  });
+
+  //////////////////////////////////
+  //
+  // Share
+  //
 
   function _share (type) {
 
@@ -117,6 +125,11 @@ angular.module('airq.controllers', [])
    }, 2000);
 
   };
+
+  //////////////////////////////////
+  //
+  // Modal Info
+  //
   
   $ionicModal.fromTemplateUrl('templates/info.html', {
       scope: $scope,
@@ -130,7 +143,7 @@ angular.module('airq.controllers', [])
   };
   
   $scope.closeModal = function() {
-      $scope.modal.hide();
+    $scope.modal.hide();
   };
   
     //Cleanup the modal when we're done with it!
@@ -148,15 +161,16 @@ angular.module('airq.controllers', [])
       // Execute action
   });
 	
+  
   function showSpinner (view, message) {
 
     $scope.view_loader = view;
     $scope.view_descr = !view;
 
-    var msg = '<ion-spinner icon="lines"></ion-spinner>';
+    var msg = '<ion-spinner icon="spiral"></ion-spinner>';
 
     if (typeof message !== 'undefined') {
-      msg = message;
+      msg += '<br />' + message;
     };
 
     if (view) {  
@@ -168,11 +182,15 @@ angular.module('airq.controllers', [])
     }
   };
 
+  //////////////////////////////////
+  //
+  // Preparazione dei dati
+  //
+
   $scope.prepare = function (data) {
 
-    showSpinner(true);
-
-    location = Geolocation.location();
+    showSpinner(true, 'preparo i dati ...');
+    
     var data_sorted;
     var item_nearest;
 
@@ -195,7 +213,7 @@ angular.module('airq.controllers', [])
       last(p_sel);
     });
 
-    // showSpinner(false);
+    showSpinner(false);
 
   };
 
@@ -206,8 +224,15 @@ angular.module('airq.controllers', [])
     last($scope.poll_sel.item);
   };
 
+  //////////////////////////////////
+  //
+  // Gauge Meters
+  //
+
   function gauge (item) {
-            
+    
+    showSpinner(true, 'visualizzo i dati ...');
+
     location = Geolocation.location();
 
     /*
@@ -306,30 +331,37 @@ angular.module('airq.controllers', [])
   //
 
   var _callback_geolocation_success = function (position) {
-    showSpinner(true);
+    showSpinner(true, 'coordinate rilevate...');
+    $scope.view_error = false;
     console.log('getting position: ' +  JSON.stringify(position));
     Geolocation.save(position);
     $scope.refresh();
   };
 
   var _callback_geolocation_error = function (error) {
+    $scope.view_error = true;
     console.error('code: '    + error.code    + '\n' +
                   'message: ' + error.message + '\n');
+    $scope.error = 'No GPS';
   };
 
   Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
   $scope.refresh = function () {
 
-    showSpinner(true);
-
+    showSpinner(true, 'leggo i valori dalle centrali...');
+    
     location = Geolocation.location();
     
     Geolocation.address(function (err, address) {
       $scope.location = address;
     });
 
-    console.log('location: ' + location.latitude + ',' + location.longitude);
+    if (location.latitude == 0 && location.longitude) {
+    
+    } else {
+      console.log('location: ' + location.latitude + ',' + location.longitude);
+    };
 
     Import.start(function (err, data) {
       data_airq = data.dataset;
@@ -338,18 +370,17 @@ angular.module('airq.controllers', [])
       $scope.source_link = data.source.url;
       $scope.data_airq = data.source.date;
       $scope.prepare(data_airq);
-      $ionicLoading.hide();
-      showSpinner(false);  
+
     });
+
+    showSpinner(false);
 
   };
 
   // calcolo la variazione di valori rispetto ai valori precedenti
   function last (item) {
 
-    showSpinner(true);
-    
-    console.log('init last...');
+    showSpinner(true, 'confronto i valori ...');
 
     Import.last(1, function (err, data_last) {
 
@@ -381,28 +412,43 @@ angular.module('airq.controllers', [])
             $scope.icon_value = 'icon ion-ios-minus-empty';
           };
         };
-
         showSpinner(false);
     });
-
-    // showSpinner(false);
-
   };
-
 })
 
 .controller('AirQCtrlList', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Import, Level, GeoJSON, $cordovaSocialSharing, SHARE) {
-
-  // Geolocation.watch();
 
   var data_sorted;
   var data_airq;
   var location;
 
-  showSpinner(true);
+  $scope.view_error = false;
+
+  function showSpinner (view, message) {
+
+    $scope.view_loader = view;
+    $scope.view_descr = !view;
+
+    var msg = '<ion-spinner icon="spiral"></ion-spinner>';
+
+    if (typeof message !== 'undefined') {
+      msg += '<br />' + message;
+    };
+
+    if (view) {  
+      $ionicLoading.show({
+          template: msg
+      });
+    } else {
+      $ionicLoading.hide();
+    }
+  };
 
   var _callback_geolocation_success = function (position) {
-    showSpinner(true);
+    showSpinner(true, 'leggo la posizione');
+    $scope.view_error = false;
+
     console.log('getting position: ' +  JSON.stringify(position));
     Geolocation.save(position);
     $scope.refresh();
@@ -411,6 +457,8 @@ angular.module('airq.controllers', [])
   var _callback_geolocation_error = function (error) {
     console.error('code: '    + error.code    + '\n' +
                   'message: ' + error.message + '\n');
+    $scope.view_error = true;
+    $scope.error = 'No GPS';
   };
 
   Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
@@ -449,23 +497,6 @@ angular.module('airq.controllers', [])
       .then(_success_share, _error_share);
     }
   };
-  
-  function showSpinner (view, message) {
-
-    var msg = '<ion-spinner icon="lines"></ion-spinner>';
-
-    if (typeof message !== 'undefined') {
-      msg = message;
-    };
-
-    if (view) {  
-      $ionicLoading.show({
-          template: msg
-      });
-    } else {
-      $ionicLoading.hide();
-    }
-  };
 
   $scope.back = function () {
     window.location.href = '#/airq'
@@ -486,7 +517,7 @@ angular.module('airq.controllers', [])
       $scope.modal.hide();
   };
   
-    //Cleanup the modal when we're done with it!
+  //Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
       $scope.modal.remove();
   });
@@ -500,8 +531,14 @@ angular.module('airq.controllers', [])
   $scope.$on('modal.removed', function() {
       // Execute action
   });
+
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $scope.refresh();
+  });
   
   $scope.refresh = function () {
+
+    showSpinner(true, 'Loading data...');
 
     location = Geolocation.location();
     
@@ -519,6 +556,8 @@ angular.module('airq.controllers', [])
         $scope.load(data_airq);
       } else {
         // error
+        $scope.view_error = true;
+        $scope.error = 'Non riesco a leggere i dati.';
       }
 
       showSpinner(false);
@@ -527,6 +566,8 @@ angular.module('airq.controllers', [])
 
   // calcolo la variazione di valori rispetto ai valori precedenti
   $scope.last = function () {
+
+    showSpinner(true, 'check data...');
 
     Import.last(1, function (err, data_last) {
 
@@ -573,7 +614,7 @@ angular.module('airq.controllers', [])
 
   $scope.load = function (data) {
 
-    showSpinner(true);
+    showSpinner(true, 'Loading data...');
 
     console.log('sorted by location: ' + location.latitude + ',' + location.longitude);
 
@@ -590,7 +631,6 @@ angular.module('airq.controllers', [])
       $scope.last();
     });
     
-    
     $scope.$broadcast('scroll.refreshComplete');
     showSpinner(false);
 
@@ -606,9 +646,29 @@ angular.module('airq.controllers', [])
   var weather;
   var location;
 
+  $scope.view_error = false;
+
+  function showSpinner (view, message) {
+
+    var msg = '<ion-spinner icon="spiral"></ion-spinner>';
+
+    if (typeof message !== 'undefined') {
+      msg += '<br />' + message;
+    };
+
+    if (view) {  
+      $ionicLoading.show({
+          template: msg
+      });
+    } else {
+      $ionicLoading.hide();
+    }
+  };
+
   var _callback_geolocation_success = function (position) {
-    showSpinner(true);
+    showSpinner(true, 'Coordinate rilevate');
     console.log('getting position: ' +  JSON.stringify(position));
+    $scope.view_error = false;
     Geolocation.save(position);
     $scope.refresh();
   };
@@ -616,19 +676,11 @@ angular.module('airq.controllers', [])
   var _callback_geolocation_error = function (error) {
     console.error('code: '    + error.code    + '\n' +
                   'message: ' + error.message + '\n');
+    $scope.view_error = true;
+    $scope.error = 'No GPS';
   };
 
   Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
-
-  $scope.showSpinner = function() {
-    $ionicLoading.show({
-        template: '<ion-spinner icon="lines"></ion-spinner>'
-    });
-  };
-
-  $scope.hideSpinner = function () {
-    $ionicLoading.hide();
-  };
 
   $scope.back = function () {
     window.location.href = '#/airq'
@@ -665,25 +717,29 @@ angular.module('airq.controllers', [])
   });
   
   $scope.$on('$ionicView.beforeEnter', function() {
-    // $scope.refresh();
+    $scope.refresh();
   });
 
   $scope.refresh = function () {
 
-    $scope.showSpinner();
-
-    // location = Geolocation.get();
+    showSpinner(true, 'loading data ...');
 
     Geolocation.address(function (err, address) {
       $scope.location = address;
     });
 
     Weather.get(function (err, data) {
-      weather = data.list;
-      $scope.weathers = weather;
+      if (err) {
+        $scope.view_error = true;
+        $scope.error = 'non riesco a leggere i dati meteo';
+      } else {
+        $scope.view_error = false;
+        weather = data.list;
+        $scope.weathers = weather;
+      };
     }); 
 
-    $scope.hideSpinner();
+    showSpinner(false);
   };
 
 });
