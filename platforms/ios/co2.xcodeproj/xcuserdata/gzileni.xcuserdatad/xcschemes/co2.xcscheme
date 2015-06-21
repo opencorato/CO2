@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-               BuildableName = "co2.app"
-               BlueprintName = "co2"
-               ReferencedContainer = "container:co2.xcodeproj">
+               BuildableName = "CO2.app"
+               BlueprintName = "CO2"
+               ReferencedContainer = "container:CO2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "co2.app"
-            BlueprintName = "co2"
-            ReferencedContainer = "container:co2.xcodeproj">
+            BuildableName = "CO2.app"
+            BlueprintName = "CO2"
+            ReferencedContainer = "container:CO2.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "co2.app"
-            BlueprintName = "co2"
-            ReferencedContainer = "container:co2.xcodeproj">
+            BuildableName = "CO2.app"
+            BlueprintName = "CO2"
+            ReferencedContainer = "container:CO2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "co2.app"
-            BlueprintName = "co2"
-            ReferencedContainer = "container:co2.xcodeproj">
+            BuildableName = "CO2.app"
+            BlueprintName = "CO2"
+            ReferencedContainer = "container:CO2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

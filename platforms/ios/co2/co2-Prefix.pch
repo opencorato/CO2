@@ -17,7 +17,7 @@
  under the License.
  */
 //
-// Prefix header for all source files of the 'co2' target in the 'co2' project
+// Prefix header for all source files of the 'CO2' target in the 'CO2' project
 //
 
 #ifdef __OBJC__

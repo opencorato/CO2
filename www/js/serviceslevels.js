@@ -22,7 +22,7 @@ var service = angular.module('airq.levels', []);
 service.factory('Level', function () {
 
   var level = {
-    getColors: function (str) {
+    getColors: function () {
       var i = 0;
       var colors = [];
       while (level.items[i]) {
@@ -30,6 +30,20 @@ service.factory('Level', function () {
         i++;
       }; 
       return colors;
+    },
+    getSectors: function () {
+      var i = 0;
+      var sectors = [];
+      while (level.items[i]) {
+        var item = {
+          color: level.items[i].color,
+          lo: level.items[i].level-1,
+          hi: level.items[i].level  
+        };
+        sectors.push(item);
+        i++;
+      }; 
+      return sectors;
     },
     getInfo: function (nlevel) {
 

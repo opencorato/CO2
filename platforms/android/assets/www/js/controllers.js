@@ -22,22 +22,27 @@ angular.module('airq.controllers', [])
 /////////////////////////////
 // Air Quality Controller
 //
-.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $localstorage, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Level, Import, GeoJSON, $ionicActionSheet, $cordovaSocialSharing, SHARE) {
+.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $localstorage, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Level, Import, GeoJSON, $ionicActionSheet, $cordovaSocialSharing, SHARE, Polluting) {
 
 	// Geolocation.watch();
 
   var data_airq;
+  var item_nearest;
+  var city_nearest;
   var location;
   var watch;
   var gauges = [];
   var p_sel;
 
-  $scope.view_data = false;
-  $scope.view_error = false;
+  showSpinner(true, 'initializing ...');
     
   $scope.$on('$ionicView.beforeEnter', function() {
     $scope.refresh();
   });
+
+  function _callback_message(open, message, counter) {
+    showSpinner(open, message);
+  };
 
   //////////////////////////////////
   //
@@ -161,11 +166,10 @@ angular.module('airq.controllers', [])
       // Execute action
   });
 	
+  $scope.view_error = false;
+  $scope.view_data = false;
   
   function showSpinner (view, message) {
-
-    $scope.view_loader = view;
-    $scope.view_descr = !view;
 
     var msg = '<ion-spinner icon="spiral"></ion-spinner>';
 
@@ -182,46 +186,62 @@ angular.module('airq.controllers', [])
     }
   };
 
-  //////////////////////////////////
-  //
-  // Preparazione dei dati
-  //
+  function _load(polluting) {
 
-  $scope.prepare = function (data) {
+    var data_filtered;
 
-    showSpinner(true, 'preparo i dati ...');
-    
-    var data_sorted;
-    var item_nearest;
+    Import.start(function (err, data) {
+      
+      data_airq = data.dataset;
+      
+      // console.log('Dataset: ' + JSON.stringify(data.dataset));
+      $scope.source = data.source.id;
+      $scope.source_link = data.source.url;
+      $scope.data_airq = data.source.date;
 
-    Import.sort(data, function (data_s) {
-
-      item_nearest = data_s[0];
-      p_sel = item_nearest;
-      // prendo solo i dati che riguardano la città più vicina
-      var data_filtered = _.filter(data, function (item_filtered) {
-        return item_filtered.station === item_nearest.station;
-      });
-
-      $scope.polls = data_filtered;
-    
-      $scope.poll_sel = {
-        item: p_sel
+      if (typeof polluting === 'undefined') {
+        data_filtered = data_airq;
+      } else {
+        data_filtered = _.filter(data_airq, function (item) {
+          return item.polluting == polluting;
+        });
       };
 
-      gauge(p_sel);
-      last(p_sel);
-    });
+      Import.sort(data_filtered, function (data_s) {
+        
+        item_nearest = data_s[0];      
+        city_nearest = item_nearest.city;
 
-    showSpinner(false);
+        console.log('item nearest: ' + JSON.stringify(item_nearest));
+
+        if (typeof polluting === 'undefined') {
+          // seleziono il primo inquinante della stazine più vicina
+          var p = _.find(Polluting, function (item) {
+            return item.name == item_nearest.polluting;
+          });
+
+          $scope.poll_sel = {
+            item : p
+          };
+        };
+
+        console.log('change gauge...');
+
+        gauge(item_nearest);
+        last(item_nearest);
+
+        showSpinner(false);
+
+      });
+
+    }, _callback_message);
 
   };
 
   $scope.changePoll = function () {
-    p_sel = $scope.poll_sel.item;
+    _reset_gauge();
     console.log('change polluting to ' + JSON.stringify($scope.poll_sel.item));
-    gauge($scope.poll_sel.item);
-    last($scope.poll_sel.item);
+    _load($scope.poll_sel.item.name);
   };
 
   //////////////////////////////////
@@ -229,7 +249,53 @@ angular.module('airq.controllers', [])
   // Gauge Meters
   //
 
-  function gauge (item) {
+  function _reset_gauge() {
+    $scope.view_data = false;
+    // $scope.title = '';
+    $scope.titleFontColor = 'blue';
+    $scope.value = 0;
+    $scope.valueFontColor = 'red';
+    $scope.min = 10;
+    $scope.max = 1000;
+    $scope.valueMinFontSize = undefined;
+    $scope.titleMinFontSize = undefined;
+    $scope.labelMinFontSize = undefined;
+    $scope.minLabelMinFontSize = undefined;
+    $scope.maxLabelMinFontSize = undefined;
+    $scope.hideValue = false;
+    $scope.hideMinMax = true;
+    $scope.hideInnerShadow = false;
+    $scope.width = undefined;
+    $scope.height = undefined;
+    $scope.relativeGaugeSize = undefined;
+    $scope.gaugeWidthScale = 0.5;
+    $scope.gaugeColor = 'grey';
+    $scope.showInnerShadow = true;
+    $scope.shadowOpacity = 0.5;
+    $scope.shadowSize = 3;
+    $scope.shadowVerticalOffset = 10;
+    $scope.levelColors = Level.getColors();
+
+    $scope.noGradient = false;
+    // $scope.label = '';
+    // $scope.labelFontColor = '';
+    $scope.startAnimationTime = 1000;
+    $scope.startAnimationType = 'linear';
+    $scope.refreshAnimationTime = 1000;
+    $scope.refreshAnimationType = 'linear';
+    $scope.donut = undefined;
+    $scope.donutAngle = 90;
+    $scope.counter = true;
+    $scope.decimals = 2;
+    $scope.symbol = '';
+    $scope.formatNumber = true;
+    $scope.humanFriendly = true;
+    $scope.humanFriendlyDecimal = true;
+    // $scope.city = '';
+    // $scope.location = '';
+  };
+
+  function gauge (item_gauge) {
     
     showSpinner(true, 'visualizzo i dati ...');
 
@@ -262,61 +328,25 @@ angular.module('airq.controllers', [])
     }
     */
 
-    console.log('item ' + JSON.stringify(item));
+    console.log('item gauge: ' + JSON.stringify(item_gauge));
 
-    var descr = 'Inquinamento di tipo ' + item.aiq.type;
+    var descr = 'Inquinamento di tipo ' + item_gauge.aiq.type;
     console.log(descr);
-    console.log('level: ' + item.aiq.level);
+    console.log('level: ' + item_gauge.aiq.level);
     
     $scope.level_type = descr;
 
-    $scope.title = Math.round(item.aiq.realvalue) + ' ' + item.aiq.um;
-    $scope.titleFontColor = 'blue';
-    $scope.value = Math.round(item.aiq.value);
-    $scope.valueFontColor = 'red';
-    $scope.min = 10;
-    $scope.max = 1000;
-    $scope.valueMinFontSize = undefined;
-    $scope.titleMinFontSize = undefined;
-    $scope.labelMinFontSize = undefined;
-    $scope.minLabelMinFontSize = undefined;
-    $scope.maxLabelMinFontSize = undefined;
-    $scope.hideValue = false;
-    $scope.hideMinMax = true;
-    $scope.hideInnerShadow = false;
-    $scope.width = undefined;
-    $scope.height = undefined;
-    $scope.relativeGaugeSize = undefined;
-    $scope.gaugeWidthScale = 0.5;
-    $scope.gaugeColor = 'grey';
-    $scope.showInnerShadow = true;
-    $scope.shadowOpacity = 0.5;
-    $scope.shadowSize = 3;
-    $scope.shadowVerticalOffset = 10;
-    $scope.levelColors = Level.getColors();
+    $scope.title = Math.round(item_gauge.aiq.realvalue) + ' ' + item_gauge.aiq.um;
+    $scope.value = Math.round(item_gauge.aiq.value);
+    $scope.label = item_gauge.city;
+    $scope.labelFontColor = item_gauge.aiq.color;
 
-    $scope.noGradient = false;
-    $scope.label = item.city;
-    $scope.labelFontColor = item.aiq.color;
-    $scope.startAnimationTime = 1000;
-    $scope.startAnimationType = 'linear';
-    $scope.refreshAnimationTime = 1000;
-    $scope.refreshAnimationType = 'linear';
-    $scope.donut = undefined;
-    $scope.donutAngle = 90;
-    $scope.counter = true;
-    $scope.decimals = 2;
-    $scope.symbol = '';
-    $scope.formatNumber = true;
-    $scope.humanFriendly = true;
-    $scope.humanFriendlyDecimal = true;
-
-    $scope.level_poll = item.aiq.level;
-
-    $scope.city = item.city;
-    $scope.location = item.location;
+    $scope.level_poll = item_gauge.aiq.level;
+    $scope.city = item_gauge.city;
+    $scope.location = item_gauge.location;
 
     $scope.view_data = true;
+
     showSpinner(false);
     
   };
@@ -331,11 +361,12 @@ angular.module('airq.controllers', [])
   //
 
   var _callback_geolocation_success = function (position) {
-    showSpinner(true, 'coordinate rilevate...');
+    // showSpinner(true, 'coordinate rilevate...');
     $scope.view_error = false;
     console.log('getting position: ' +  JSON.stringify(position));
     Geolocation.save(position);
-    $scope.refresh();
+    // $scope.refresh();
+
   };
 
   var _callback_geolocation_error = function (error) {
@@ -349,8 +380,11 @@ angular.module('airq.controllers', [])
 
   $scope.refresh = function () {
 
-    showSpinner(true, 'leggo i valori dalle centrali...');
-    
+    showSpinner(true, 'leggo i valori dalle centraline...');
+    _reset_gauge();
+
+    $scope.polls = Polluting;
+
     location = Geolocation.location();
     
     Geolocation.address(function (err, address) {
@@ -358,22 +392,14 @@ angular.module('airq.controllers', [])
     });
 
     if (location.latitude == 0 && location.longitude) {
-    
+      $scope.view_error = true;
+      $scope.error = 'No GPS'
     } else {
       console.log('location: ' + location.latitude + ',' + location.longitude);
+      $scope.view_error = false;
     };
 
-    Import.start(function (err, data) {
-      data_airq = data.dataset;
-      // console.log('Dataset: ' + JSON.stringify(data.dataset));
-      $scope.source = data.source.id;
-      $scope.source_link = data.source.url;
-      $scope.data_airq = data.source.date;
-      $scope.prepare(data_airq);
-
-    });
-
-    showSpinner(false);
+    _load();
 
   };
 
@@ -561,7 +587,11 @@ angular.module('airq.controllers', [])
       }
 
       showSpinner(false);
-    });
+    }, _callback_message);
+  };
+
+  function _callback_message(open, message, counter) {
+    showSpinner(open, message);
   };
 
   // calcolo la variazione di valori rispetto ai valori precedenti
@@ -646,9 +676,11 @@ angular.module('airq.controllers', [])
   var weather;
   var location;
 
-  $scope.view_error = false;
+  showSpinner(true);
 
   function showSpinner (view, message) {
+
+    $scope.view_error = view;
 
     var msg = '<ion-spinner icon="spiral"></ion-spinner>';
 
@@ -737,9 +769,8 @@ angular.module('airq.controllers', [])
         weather = data.list;
         $scope.weathers = weather;
       };
+      showSpinner(false);
     }); 
-
-    showSpinner(false);
   };
 
 });

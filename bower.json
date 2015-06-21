@@ -8,6 +8,9 @@
   },
   "dependencies": {
     "pouchdb": "~3.6.0",
-    "angular-pouchdb": "~2.1.0"
+    "angular-pouchdb": "~2.1.0",
+    "d3": "~3.5.5",
+    "nvd3": "~1.8.1",
+    "angularjs-nvd3-directives": "~0.0.7"
   }
 }

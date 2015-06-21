@@ -64,6 +64,7 @@ service.factory('pdb', function (pouchDB) {
 
 		// legge un documento
 		get: function(db, id, callback) {
+			
 			db.get(id).then(function (doc) {
 			  // handle doc
 			  	// console.log('doc founded ' + JSON.stringify(doc));

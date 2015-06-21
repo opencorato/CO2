@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.co2" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.co2" version="1.1.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
     <feature name="Keyboard">
         <param name="android-package" value="com.ionic.keyboard.IonicKeyboard" />
@@ -13,6 +13,9 @@
     </feature>
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+    <feature name="ProgressIndicator">
+        <param name="android-package" value="org.apache.cordova.plugin.ProgressIndicator" />
     </feature>
     <splash density="land-ldpi" src="resources/android/splash/drawable-land-ldpi-screen.png" />
     <splash density="land-mdpi" src="resources/android/splash/drawable-land-mdpi-screen.png" />
@@ -31,12 +34,12 @@
     <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
     <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
     <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
-    <name>co2</name>
+    <name>CO2</name>
     <description>
         Una App OpenPuglia per il monitoraggio della qualità dell'aria
     </description>
     <author email="giuseppe.zileni@gmail.com" href="http://giuseppezileni.github.io">
-      @gzileni
+      Giuseppe Zileni
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -48,7 +51,4 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <feature name="ProgressIndicator">
-        <param name="android-package" value="org.apache.cordova.plugin.ProgressIndicator" />
-    </feature>
 </widget>

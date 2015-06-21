@@ -69,9 +69,7 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
         enableHighAccuracy: true 
       };
       
-      var watchId = navigator.geolocation.watchPosition(callback_success, callback_error, options);
-      console.log('watching ID: ' + watchId);
-      // location.watchId = watchId;
+      navigator.geolocation.watchPosition(callback_success, callback_error, options);
     },
     location: function () {
       var location = $localstorage.getObject('location');

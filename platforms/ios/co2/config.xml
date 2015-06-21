@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.co2" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.co2" version="1.1.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="BackupWebStorage" value="cloud" />
     <preference name="DisallowOverscroll" value="false" />
@@ -33,6 +33,9 @@
     <feature name="Geolocation">
         <param name="ios-package" value="CDVLocation" />
     </feature>
+    <feature name="ProgressIndicator">
+        <param name="ios-package" value="ProgressIndicator" />
+    </feature>
     <splash height="1136" src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" />
     <splash height="1334" src="resources/ios/splash/Default-667h.png" width="750" />
     <splash height="2208" src="resources/ios/splash/Default-736h.png" width="1242" />
@@ -59,12 +62,12 @@
     <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />
     <icon height="58" src="resources/ios/icon/icon-small@2x.png" width="58" />
     <icon height="87" src="resources/ios/icon/icon-small@3x.png" width="87" />
-    <name>co2</name>
+    <name>CO2</name>
     <description>
         Una App OpenPuglia per il monitoraggio della qualità dell'aria
     </description>
     <author email="giuseppe.zileni@gmail.com" href="http://giuseppezileni.github.io">
-      @gzileni
+      Giuseppe Zileni
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -76,7 +79,4 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <feature name="ProgressIndicator">
-        <param name="ios-package" value="ProgressIndicator" />
-    </feature>
 </widget>
