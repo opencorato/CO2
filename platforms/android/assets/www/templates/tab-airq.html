@@ -9,85 +9,50 @@
 
     <ion-content>
 
-        <div class="list card">
-            
-            <div class="item item-avatar item-text-wrap">
-                <img ng-show="view_data" ng-src=" {{ level_poll | level_image }} " />
-                <h2>{{ poll_sel.item.name }}</h2>
-                <h3>{{ level_poll | level_descr }}</h3>
-                <h4>{{ level_type }}</h4>
-                <p>{{ poll_sel.item.description }}</p>
-                <label class="item item-input item-select">
-                    <div class="input-label">Inquinante</div>
-                    <select ng-model="poll_sel.item" ng-change="changePoll()" ng-options="poll.name for poll in polls">
-                    </select>
-                </label>
+        <ion-refresher on-refresh="refresh()" pulling-text="Pull to Refresh"></ion-refresher>
+
+        <ion-list>
+            <div>
+                <p ng-show="view_error">
+                    <i class="icon ion-alert-circled"></i> {{ error }}
+                </p>
             </div>
 
-            <div class="item tabs tabs-secondary tabs-icon-left">
-                <a class="tab-item" ui-sref="tab.detail({poll: poll_sel.item.name })">
-                  <i class="icon ion-ios-location"></i>
-                  Mappa
-                </a>
-                <a class="tab-item" href="#" ng-click="share()">
-                  <i class="icon ion-share"></i>
-                  Share
-                </a>
-                <a class="tab-item" href="#" ng-show="view_error">
-                  <i class="icon ion-alert-circled"></i>
-                  {{ error }}
-                </a>
-            </div>          
-        </div>
+            <ion-item collection-repeat="airq in airqlist">
+                <div class="list card">
+                    <div class="item item-avatar item-text-wrap">
+                        <img ng-src=" {{ airq.item.aiq.level | level_image }}" />
+                        <h2>{{ airq.item.city }}</h2>
+                        <h3>{{ airq.item.aiq.value | number : 1 }} {{ last | last }}, {{ airq.item.aiq.level | level_descr }}</h3>
+                        <h4>Inquinamento di tipo {{ airq.item.aiq.type }}</h4>
+                        <p>{{ airq.item.polluting | polluting }}</p>
+                        
+                        <nvd3-bullet-chart
+                            data="airq"
+                            margin="{left:75,top:60,bottom:60,right:10}"
+                            height="160"
+                            interactive="true">
+                            <svg></svg>
+                        </nvd3-bullet-chart>
 
-          <!--
-          <div class="item item-body">
-          -->
-            <div justgage
-                 title="{{ title }} {{ last_value | last }}" 
-                 title-font-color="{{ titleFontColor }}"
-                 value="{{ value }}" 
-                 value-font-color="{{ valueFontColor }}"
-                 width="{{ width }}" 
-                 height="{{ height }}" 
-                 relative-gauge-size="{{ relativeGaugeSize }}"
-                 value-min-font-size="{{ valueMinFontSize }}" 
-                 title-min-font-size="{{ titleMinFontSize }}"
-                 label-min-font-size="{{ labelMinFontSize }}" 
-                 min-label-min-font-size="{{ minLabelMinFontSize }}"
-                 maxLabelMinFontSize="{{ maxLabelMinFontSize }}"
-                 min="{{ min }}" 
-                 max="{{ max }}"
-                 hide-min-max="{{ hideMinMax }}" 
-                 hide-value="{{ hideValue }}" 
-                 hide-inner-shadow="{{ hideInnerShadow }}"
-                 gauge-width-scale="{{ gaugeWidthScale }}" 
-                 gauge-color="{{ gaugeColor }}"
-                 show-inner-shadow="{{ showInnerShadow }}" 
-                 shadow-opacity="{{ shadowOpacity }}"
-                 shadow-size="{{ shadowSize }}" 
-                 shadow-vertical-offset="{{ shadowVerticalOffset }}"
-                 level-colors="{{ levelColors }}" 
-                 custom-sectors="{{ customSectors }}" 
-                 no-gradient="{{ noGradient }}"
-                 label="{{ label }} {{ location | distance }}" 
-                 label-font-color="{{ labelFontColor }}"
-                 start-animation-time="{{ startAnimationTime }}" 
-                 start-animation-type="{{ startAnimationType }}"
-                 refresh-animation-time="{{ refreshAnimationTime }}" 
-                 refresh-animation-type="{{ refreshAnimationType }}"
-                 donut="{{ donut }}" 
-                 donut-start-angle="{{ donutStartAngle }}"
-                 counter="{{ counter }}" 
-                 decimals="{{ decimals }}" 
-                 symbol="{{ symbol }}" 
-                 format-number="{{ formatNumber }}"
-                 human-friendly="{{ humanFriendly }}" 
-                 human-friendly-decimal="{{ humanFriendlyDecimal }}"
-                 text-renderer="textRenderer()"
-                 ng-show="view_data">
-            </div>
-            
+                    </div>
+
+                    <div class="item tabs tabs-secondary tabs-icon-left">
+                        <a class="tab-item" ui-sref="tab.detail({poll: airq.item.polluting })">
+                          <i class="icon ion-ios-location"></i>
+                          Mappa
+                        </a>
+                        <a class="tab-item" href="#" ng-click="share()">
+                          <i class="icon ion-share"></i>
+                          Share
+                        </a>
+                        <a class="tab-item" href="#" ng-show="view_error">
+                          <i class="icon ion-alert-circled"></i>
+                          {{ error }}
+                        </a>
+                    </div>          
+                </div>
+        </ion-list>
         
   </ion-content>
   

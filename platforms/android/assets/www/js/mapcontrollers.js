@@ -388,7 +388,7 @@ function _get_radius(val) {
 		o = 64;
 	};
 	
-	return v;
+	return o;
 
 };
 
@@ -396,16 +396,18 @@ function _get_opacity(val) {
 
 	var v = (val / 10);
 
-	// min: 0.1 - max: 0.9
+	// min: 0.1 - max: 0.7
 
-	var o;
+	var o = 0.1;
 
-	if (v < 0.1) {
-		o = 0.1;
-	} else if (v > 0.9) {
-		o = 0.9;
+	if (v <= 1) {
+		o = 0.2
+	} else if (v <= 4) {
+		o = 0.4
+	} else if (v <= 8) {
+		o = 0.9
 	};
-	
+
 	return o;
 
 };
@@ -439,8 +441,8 @@ function _html_feature(feature, Geolocation, Level) {
 		}
 		*/
 
-	var html = '<h4>' + feature.station + '</h4>' +
-			   '<h5>' + feature.city + ' (' + feature.state + ')</h5>' +
+	var html = '<h4>' + feature.polluting + '</h4>' +
+			   '<h5>' + feature.city + ' (' + feature.station + ')</h5>' +
 			   '<p>Valore misurato è <strong>' + Math.round(feature.aiq.realvalue) + '</strong> ' + feature.aiq.um + ' <br />' +
 			   'Inquinamento di tipo ' + feature. aiq.type + '<br />' +
 			   'Indice di qualità dell\'aria è di <strong>' + Math.round(feature.aiq.value) + '</strong><br />' + Level.getInfo(feature.aiq.level) + '<br />' + 

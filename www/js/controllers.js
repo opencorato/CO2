@@ -197,7 +197,7 @@ angular.module('airq.controllers', [])
         subtitle: item.aiq.realvalue + ' ' + item.aiq.um,
         ranges: [0, 500],
         measures: [],  
-        markers: [150, 300],
+        markers: [250, 400],
         item: item
       };
 

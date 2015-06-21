@@ -193,6 +193,22 @@ filters.filter("level_descr", function (_, Level) {
   }
 });
 
+filters.filter("level_colors", function (Level) {
+  return function (input) {
+    if (typeof input !== 'undefined') {
+      return Level.getColors();
+    };  
+  }
+});
+
+filters.filter("level_sector", function (Level) {
+  return function (input) {
+    if (typeof input !== 'undefined') {
+      return Level.getSectors();
+    };  
+  }
+});
+
 filters.filter("level_image", function (Level) {
   return function (input) {
 

@@ -17,7 +17,7 @@
 //
 //
 
-angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'airq.controllers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'GaugeMeter', 'frapontillo.gage', 'async', 'S', 'pouchdb'])
+angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'airq.controllers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'frapontillo.gage', 'async', 'S', 'pouchdb', 'nvd3ChartDirectives'])
 
 .run(function ($ionicPlatform, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush, $cordovaBackgroundGeolocation) {
 

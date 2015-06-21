@@ -22,7 +22,7 @@ angular.module('airq.controllers', [])
 /////////////////////////////
 // Air Quality Controller
 //
-.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $localstorage, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Level, Import, GeoJSON, $ionicActionSheet, $cordovaSocialSharing, SHARE, Polluting) {
+.controller('AirQCtrl', function ($scope, Geolocation, $ionicLoading, $localstorage, $timeout, _, UTILITY, $ionicModal, Level, Import, GeoJSON, $ionicActionSheet, $cordovaSocialSharing, SHARE, Polluting, async) {
 
 	// Geolocation.watch();
 
@@ -186,7 +186,35 @@ angular.module('airq.controllers', [])
     }
   };
 
-  function _load(polluting) {
+  function _prepare(data) {
+
+    var data_meters = [];
+
+    async.each(data, function (item, callback) {
+
+      var data_item = {
+        title: item.polluting,
+        subtitle: item.aiq.realvalue + ' ' + item.aiq.um,
+        ranges: [0, 500],
+        measures: [],  
+        markers: [150, 300],
+        item: item
+      };
+
+      data_item.measures.push(item.aiq.realvalue);
+      data_meters.push(data_item);
+      callback();
+
+    }, function (err) {
+      if (!err) {
+        $scope.airqlist = data_meters;
+      } else {
+
+      }
+    });
+  };
+
+  function _load() {
 
     var data_filtered;
 
@@ -199,36 +227,19 @@ angular.module('airq.controllers', [])
       $scope.source_link = data.source.url;
       $scope.data_airq = data.source.date;
 
-      if (typeof polluting === 'undefined') {
-        data_filtered = data_airq;
-      } else {
-        data_filtered = _.filter(data_airq, function (item) {
-          return item.polluting == polluting;
-        });
-      };
-
-      Import.sort(data_filtered, function (data_s) {
+      Import.sort(data_airq, function (data_s) {
         
-        item_nearest = data_s[0];      
-        city_nearest = item_nearest.city;
-
         console.log('item nearest: ' + JSON.stringify(item_nearest));
 
-        if (typeof polluting === 'undefined') {
-          // seleziono il primo inquinante della stazine più vicina
-          var p = _.find(Polluting, function (item) {
-            return item.name == item_nearest.polluting;
-          });
+        data_filtered = _.filter(data_airq, function (item) {
+          return item.city == data_s[0].city;
+        });
 
-          $scope.poll_sel = {
-            item : p
-          };
-        };
+        _prepare(data_filtered)
 
         console.log('change gauge...');
 
-        gauge(item_nearest);
-        last(item_nearest);
+        last();
 
         showSpinner(false);
 
@@ -236,119 +247,6 @@ angular.module('airq.controllers', [])
 
     }, _callback_message);
 
-  };
-
-  $scope.changePoll = function () {
-    _reset_gauge();
-    console.log('change polluting to ' + JSON.stringify($scope.poll_sel.item));
-    _load($scope.poll_sel.item.name);
-  };
-
-  //////////////////////////////////
-  //
-  // Gauge Meters
-  //
-
-  function _reset_gauge() {
-    $scope.view_data = false;
-    // $scope.title = '';
-    $scope.titleFontColor = 'blue';
-    $scope.value = 0;
-    $scope.valueFontColor = 'red';
-    $scope.min = 10;
-    $scope.max = 1000;
-    $scope.valueMinFontSize = undefined;
-    $scope.titleMinFontSize = undefined;
-    $scope.labelMinFontSize = undefined;
-    $scope.minLabelMinFontSize = undefined;
-    $scope.maxLabelMinFontSize = undefined;
-    $scope.hideValue = false;
-    $scope.hideMinMax = true;
-    $scope.hideInnerShadow = false;
-    $scope.width = undefined;
-    $scope.height = undefined;
-    $scope.relativeGaugeSize = undefined;
-    $scope.gaugeWidthScale = 0.5;
-    $scope.gaugeColor = 'grey';
-    $scope.showInnerShadow = true;
-    $scope.shadowOpacity = 0.5;
-    $scope.shadowSize = 3;
-    $scope.shadowVerticalOffset = 10;
-    $scope.levelColors = Level.getColors();
-
-    $scope.noGradient = false;
-    // $scope.label = '';
-    // $scope.labelFontColor = '';
-    $scope.startAnimationTime = 1000;
-    $scope.startAnimationType = 'linear';
-    $scope.refreshAnimationTime = 1000;
-    $scope.refreshAnimationType = 'linear';
-    $scope.donut = undefined;
-    $scope.donutAngle = 90;
-    $scope.counter = true;
-    $scope.decimals = 2;
-    $scope.symbol = '';
-    $scope.formatNumber = true;
-    $scope.humanFriendly = true;
-    $scope.humanFriendlyDecimal = true;
-    // $scope.city = '';
-    // $scope.location = '';
-  };
-
-  function gauge (item_gauge) {
-    
-    showSpinner(true, 'visualizzo i dati ...');
-
-    location = Geolocation.location();
-
-    /*
-    {
-      "station":"Altamura",
-      "city":"Altamura",
-      "state":"Bari",
-      "value":11,
-      "day":3,
-      "distance":31317,
-      "aiq":{
-        "value":10.185185185185185,
-        "realvalue":11,
-        "type":"urbano",
-        "warning":0,
-        "color":"#37e400",
-        "text":"good",
-        "level":1,
-        "um":"µg/m³",
-        "limit":0
-        },
-      "polluting":"PM10",
-      "location":{
-        "latitude":40.82786543446942,
-        "longitude":16.56019549806092
-      }
-    }
-    */
-
-    console.log('item gauge: ' + JSON.stringify(item_gauge));
-
-    var descr = 'Inquinamento di tipo ' + item_gauge.aiq.type;
-    console.log(descr);
-    console.log('level: ' + item_gauge.aiq.level);
-    
-    $scope.level_type = descr;
-
-    $scope.title = Math.round(item_gauge.aiq.realvalue) + ' ' + item_gauge.aiq.um;
-    $scope.value = Math.round(item_gauge.aiq.value);
-    $scope.label = item_gauge.city;
-    $scope.labelFontColor = item_gauge.aiq.color;
-
-    $scope.level_poll = item_gauge.aiq.level;
-    $scope.city = item_gauge.city;
-    $scope.location = item_gauge.location;
-
-    $scope.view_data = true;
-
-    showSpinner(false);
-    
   };
 
   $scope.textRenderer = function (value) {
@@ -365,7 +263,7 @@ angular.module('airq.controllers', [])
     $scope.view_error = false;
     console.log('getting position: ' +  JSON.stringify(position));
     Geolocation.save(position);
-    // $scope.refresh();
+    $scope.refresh();
 
   };
 
@@ -381,8 +279,7 @@ angular.module('airq.controllers', [])
   $scope.refresh = function () {
 
     showSpinner(true, 'leggo i valori dalle centraline...');
-    _reset_gauge();
-
+    
     $scope.polls = Polluting;
 
     location = Geolocation.location();
@@ -404,7 +301,7 @@ angular.module('airq.controllers', [])
   };
 
   // calcolo la variazione di valori rispetto ai valori precedenti
-  function last (item) {
+  function last () {
 
     showSpinner(true, 'confronto i valori ...');
 
@@ -412,38 +309,42 @@ angular.module('airq.controllers', [])
 
       // console.log('last_data n.:' + _.size(data_last.dataset));
       // console.log('check last value by ' + JSON.stringify(item));
+
+      for (var i = 0; i < $scope.airqlist.length; i++) {
+        $scope.$watch('airqlist[' + i + ']', function (newValue, oldValue) {
       
-      var item_poll_near = _.find(data_last.dataset, function (item_data) {
-          //console.log('item last: ' + JSON.stringify(item));
-          //console.log('newValue: ' + JSON.stringify(newValue));
-          return (item.polluting == item_data.polluting && 
-                  item.city == item_data.city && 
-                  item.station == item_data.station);
-        });
+            var item_poll_near = _.find(data_last.dataset, function (item_data) {
+              return (newValue.item.polluting == item_data.polluting && 
+                      newValue.item.city == item_data.city && 
+                      newValue.item.station == item_data.station);
+            });
 
-        if (typeof item_poll_near !== 'undefined') {
+            if (typeof item_poll_near !== 'undefined') {
 
-          // console.log('item founded: ' + JSON.stringify(item_poll));
-          
-          var value_r = item.aiq.realvalue;
-          var value_l = item_poll_near.aiq.realvalue;
+              // console.log('item founded: ' + JSON.stringify(item_poll));
+              
+              var value_r = newValue.item.aiq.realvalue;
+              var value_l = item_poll_near.aiq.realvalue;
 
-          $scope.last_value = (value_l / value_r);
+              $scope.last = (value_l / value_r);
 
-          if (value_l > value_r) {
-            $scope.icon_value = 'icon ion-ios-arrow-thin-down';
-          } else if (value_l < value_r) {
-            $scope.icon_value = 'icon ion-ios-arrow-thin-up';
-          } else {
-            $scope.icon_value = 'icon ion-ios-minus-empty';
-          };
+              if (value_l > value_r) {
+                $scope.icon_value = 'icon ion-ios-arrow-thin-down';
+              } else if (value_l < value_r) {
+                $scope.icon_value = 'icon ion-ios-arrow-thin-up';
+              } else {
+                $scope.icon_value = 'icon ion-ios-minus-empty';
+              };
+
+            };
+          });
         };
         showSpinner(false);
     });
   };
 })
 
-.controller('AirQCtrlList', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, GaugeMeter, Import, Level, GeoJSON, $cordovaSocialSharing, SHARE) {
+.controller('AirQCtrlList', function ($scope, Geolocation, $ionicLoading, $timeout, _, UTILITY, $ionicModal, Import, Level, GeoJSON, $cordovaSocialSharing, SHARE) {
 
   var data_sorted;
   var data_airq;
