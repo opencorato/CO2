@@ -26,15 +26,19 @@
                         <h3>{{ airq.item.aiq.value | number : 1 }} {{ last | last }}, {{ airq.item.aiq.level | level_descr }}</h3>
                         <h4>Inquinamento di tipo {{ airq.item.aiq.type }}</h4>
                         <p>{{ airq.item.polluting | polluting }}</p>
-                        
-                        <nvd3-bullet-chart
-                            data="airq"
-                            margin="{left:75,top:60,bottom:60,right:10}"
-                            height="160"
-                            interactive="true">
-                            <svg></svg>
-                        </nvd3-bullet-chart>
 
+                    </div>
+
+                    <div class="item item-body" align="center">
+                    <h2>{{ airq.item.polluting }}</h2> 
+                    <h3>{{ airq.item.aiq.realvalue | number : 1 }} {{ airq.item.aiq.um }}</h2></h3>
+                    <nvd3-bullet-chart
+                            data="airq"
+                            margin="{left:0,top:10,bottom:10,right:0}"
+                            height="160"
+                            orient="top">
+                            <svg></svg>
+                    </nvd3-bullet-chart>
                     </div>
 
                     <div class="item tabs tabs-secondary tabs-icon-left">

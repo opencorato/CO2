@@ -1,6 +1,6 @@
 <ion-view view-title="Centraline" hide-nav-bar="true" cache-view="false">
     
-    <ion-header-bar class="bar bar-header bar-light">
+    <ion-header-bar class="bar bar-header bar-positive">
         <div class="buttons">
             <button class="button button-clear" ng-click="back()">
                 <i class="icon ion-ios-home"></i>
@@ -33,10 +33,10 @@
                     <p><p ng-if="airq.aiq.type == 'urbano'"><strong>Qualità dell'aria: {{ airq.aiq.value | number: 1 }} </strong></p>
                     <p>Valore misurato: {{ airq.aiq.realvalue | number }} {{ airq.aiq.um }}</p>
                 </a>
-                <div class="button-bar">
-                  <a class="button button-clear button-positive" ng-click="share('facebook', airq)"><i class="icon ion-social-facebook"></i></a>
-                  <a class="button button-clear button-positive" ng-click="share('twitter', airq)"><i class="icon ion-social-twitter"></i></a>
-                  <a class="button button-clear button-positive" ng-click="share('whatsapp', airq)"><i class="icon ion-social-whatsapp"></i></a>
+                <div class="button-bar button-clear">
+                  <a class="button button-clear" ng-click="share('facebook', airq)"><i class="icon ion-social-facebook"></i></a>
+                  <a class="button button-clear" ng-click="share('twitter', airq)"><i class="icon ion-social-twitter"></i></a>
+                  <a class="button button-clear" ng-click="share('whatsapp', airq)"><i class="icon ion-social-whatsapp"></i></a>
                 </div>
             </ion-item>
         </ion-list>
