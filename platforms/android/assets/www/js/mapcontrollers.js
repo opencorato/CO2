@@ -23,7 +23,7 @@ var marker;
 var layer;
 var map;
 
-mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ionicLoading, leafletData, UTILITY, $ionicModal, Level, Import, GeoJSON, S) {
+mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ionicLoading, leafletData, UTILITY, Level, Import, GeoJSON, S) {
   	
   	var location;
   	var poll_data;
@@ -35,49 +35,16 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	var poll = $stateParams.poll;
 	var city = $stateParams.city;
 
+	$scope.title = poll;
+
 	console.log('Params Poll: ' + poll);
-	console.log('Params City: ' + city);
-
-	// Geolocation.watch();
-
+	
 	showSpinner(true);
 	
-	$ionicModal.fromTemplateUrl('templates/poll_descr.html', {
-	    scope: $scope,
-	    animation: 'slide-in-up'
-	  }).then(function(modal) {
-	    $scope.modal = modal;
-	  });
-  
-	$scope.openModal = function() {
-		$scope.levels = Level.items;
-		$scope.polluting_descr = poll;
-	    $scope.modal.show();
-	};
-
 	$scope.back = function () {
-		window.location.href = '#/airq';
+		window.location.href = '#/tab/airq';
 	};
   
-	$scope.closeModal = function() {
-	    $scope.modal.hide();
-	};
-  
-	  //Cleanup the modal when we're done with it!
-	$scope.$on('$destroy', function() {
-	    $scope.modal.remove();
-	});
-  
-	  // Execute action on hide modal
-	$scope.$on('modal.hidden', function() {
-	    // Execute action
-	});
-  
-	  // Execute action on remove modal
-	$scope.$on('modal.removed', function() {
-	    // Execute action
-	});
-	
 	$scope.$on('$ionicView.beforeEnter', function() {
     	$scope.refresh();
     });
@@ -134,22 +101,12 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	      
 	      if (!err) {
 
-	      	if (typeof poll !== 'undefined') {
-	      		console.log('filtering data by poll: ' + poll);
-	      		$scope.title = poll;
-	      		poll_data = _.filter(data.dataset, function (item) {
-					return S(item.polluting).contains(poll);
-			  	});
-		    };
-
-		    if (typeof city !== 'undefined') {
-		    	console.log('filtering data by city: ' + city);
-		    	$scope.title = city;
-		    	poll_data = _.filter(data.dataset, function (item) {
-					return S(item.city).contains(city);
-			  	});
-		    };
-
+      		console.log('filtering data by poll: ' + poll);
+      		$scope.title = poll;
+      		poll_data = _.filter(data.dataset, function (item) {
+				return S(item.polluting).contains(poll);
+		  	});
+	    
 		    console.log('n. elements filtered: ' + _.size(poll_data));
 		    // console.log('elements filtered: ' + JSON.stringify(poll_data));
 
@@ -164,15 +121,21 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 
 	      showSpinner(false);
 
-	    }, _callback_message);
+	    }, _callback_message, _error);
 
 	    showSpinner(false);
 	
 	};
 
-	function _callback_message(open, message, counter) {
-    	showSpinner(open, message);
+	function _callback_message(message, counter) {
+    	showSpinner(true, message);
   	};
+
+  	function _error(message) {
+    	// $scope.view_error = true;
+    	console.error(message);
+    	// $scope.error = message;
+  	}
 
     // visualizzo i dati geojson
 	$scope.geojson = function () {
@@ -437,7 +400,7 @@ function _html_feature(feature, Geolocation, Level) {
 	var html = '<h4>' + feature.polluting + '</h4>' +
 			   '<h5>' + feature.city + ' (' + feature.station + ')</h5>' +
 			   '<p>Valore misurato è <strong>' + Math.round(feature.aiq.realvalue) + '</strong> ' + feature.aiq.um + ' <br />' +
-			   'Inquinamento di tipo ' + feature. aiq.type + '<br />' +
+			   'Inquinamento di tipo ' + feature.aiq.type + '<br />' +
 			   'Indice di qualità dell\'aria è di <strong>' + Math.round(feature.aiq.value) + '</strong><br />' + Level.getInfo(feature.aiq.level) + '<br />' + 
 			   'Distanza: ' + Geolocation.distance(feature.location.latitude, feature.location.longitude) + ' km' + '</p>';
 

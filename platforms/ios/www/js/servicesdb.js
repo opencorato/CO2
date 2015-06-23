@@ -25,22 +25,27 @@ service.factory('pdb', function (pouchDB) {
 
 		// apre il database
 		open: function (name, callback) {
+			
 			var db = pouchDB(name);
 			if (typeof callback === 'function') {
 				callback(db);
-			};	
+			};
+
 		},
 
 		// chiude il database
-		close: function (db, callback) {
-			db.destroy().then(function () {
-			  // success
-			  if (typeof callback === 'function') {
-			  	callback(false)
-			  }
-			}).catch(function (error) {
-			  	console.log(error);
-				callback(error)  
+		close: function (name, callback) {
+			
+			pouchdb_json.open(name, function (db) {
+				db.destroy().then(function () {
+				  // success
+				  if (typeof callback === 'function') {
+				  	callback(false)
+				  }
+				}).catch(function (error) {
+				  	console.log(error);
+					callback(error)  
+				});
 			});
 		},
 

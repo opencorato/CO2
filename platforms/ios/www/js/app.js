@@ -207,16 +207,6 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
     }
   })
 
-  .state('tab.airq-list', {
-    url: '/airq-list',
-    views: {
-      'tab-airq-list': {
-        templateUrl: 'templates/tab-airq-list.html',
-        controller: 'AirQCtrlList'
-      }
-    }
-  })
-
   .state('tab.weather', {
       url: '/weather',
       views: {
@@ -227,24 +217,10 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
       }
   })
 
-  .state('tab.city', {
-    url: '/airq/:city',
-    views: {
-      'tab-airq': {
-        templateUrl: 'templates/tab-airq-detail.html',
-        controller: 'MapCtrl'
-      }
-    }
-  })
-
   .state('tab.detail', {
     url: '/airq/:poll',
     views: {
       'tab-airq': {
-        templateUrl: 'templates/tab-airq-detail.html',
-        controller: 'MapCtrl'
-      },
-      'tab-airq-list': {
         templateUrl: 'templates/tab-airq-detail.html',
         controller: 'MapCtrl'
       }
