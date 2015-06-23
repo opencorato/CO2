@@ -60,7 +60,7 @@ angular.module('airq.controllers', [])
     });
 
     if (typeof l !== 'undefined') {
-      message = 'Rilevato inquinante ' + item.polluting + ' a ' + Math.round(item.aiq.realvalue) + ' ' + p_sel.aiq.um + ' (aqi: ' + Math.round(p_sel.aiq.value) + ') ' +
+      message = 'Rilevato inquinante ' + item.polluting + ' a ' + Math.round(item.aiq.realvalue) + ' ' + item.aiq.um + ' (aqi: ' + Math.round(item.aiq.value) + ') ' +
                 'a ' + item.city + ',inquinamento ' + item.aiq.type + ',' + l.name;
 
       image = SHARE.github + l.image;
