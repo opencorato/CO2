@@ -251,7 +251,7 @@ angular.module('airq.controllers', [])
     $scope.view_error = true;
     console.error(message);
     $scope.error = message;
-  }
+  };
 
   ///////////////////////
   //

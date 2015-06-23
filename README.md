@@ -31,6 +31,8 @@ I dati di monitoraggio dell'aria vengono rilevati dalle centraline ARPA più vic
 
 ## Rilevamento della qualità dell'aria
 ![co2](screenshots/iphone4s/co2.png)
+
+### Indicatore 
 ![gauge](screenshots/iphone4s/gauge.png)
 
 ## Mappa degli inquinanti
