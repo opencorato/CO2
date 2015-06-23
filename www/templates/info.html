@@ -24,6 +24,15 @@
           <p>{{ data_airq }}</p>
       </div>
 
+      <div class="item item-divider">Legenda</div>
+
+      <div class="list">
+        <a class="item item-avatar item-text-wrap" href="#" ng-repeat="level in levels">
+          <img ng-src="{{ level.image }}">
+            <h2>{{ level.name }}</h2>
+        </a>
+      </div>
+
       <div class="item item-divider">Made by</div>
       <div class="item item-avatar item-text-wrap">
         <img src="img/logo.png">
@@ -39,7 +48,6 @@
         <p>Senior Developer</p>
         <p><a href="mailto:giuseppe.zileni@gmail.com" target="_blank"><i class="icon ion-ios-email"></i></a> <a href="https://twitter.com/gzileni" target="_blank"><i class="icon ion-social-twitter"></i></a> <a href="https://it.linkedin.com/in/giuseppezileni" target="_blank"><i class="icon ion-social-linkedin"></i></a> <a href="http://giuseppezileni.github.io" target="_blank"><i class="icon ion-ios-world"></i></a></p>
       </div>
-
     </div>
 
    </ion-content>

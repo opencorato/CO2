@@ -56,13 +56,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	};
 
 	$scope.back = function () {
-		if (typeof poll !== 'undefined' || poll != '') {
-			window.location.href = '#/airq-list';
-		};
-
-		if (typeof city !== 'undefined' || city != '') {
-			window.location.href = '#/airq';
-		};
+		window.location.href = '#/tab/airq';
 	};
   
 	$scope.closeModal = function() {
@@ -106,10 +100,9 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
   	};
 
   	var _callback_geolocation_success = function (position) {
-	    // showSpinner(true);
 	    console.log('getting position: ' +  JSON.stringify(position));
 	    Geolocation.save(position);
-	    // $scope.refresh();
+	    $scope.refresh();
 	};
 
 	var _callback_geolocation_error = function (error) {

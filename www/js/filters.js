@@ -19,6 +19,14 @@
 
 var filters = angular.module('airq.filters', []);
 
+filters.filter('unique', function() {
+    return function (arr, field) {
+        return _.uniq(arr, function(a) { 
+          return a[field]; 
+        });
+    };
+});
+
 filters.filter("location", function () {
 
   return function (input) {
@@ -84,12 +92,11 @@ filters.filter("distance", function (Geolocation, GeoJSON) {
 
     var distance = '';
 
+    // console.log('check distace: ' + JSON.stringify(input));
+
     if (typeof input !== 'undefined') {
       var location = Geolocation.location();
-      var d = GeoJSON.distance(location.latitude, location.longitude, input.latitude, input.longitude);
-      if (!isNaN) {
-        distance = Math.round(GeoJSON.distance(location.latitude, location.longitude, input.latitude, input.longitude)) + ' Km';
-      };
+      var distance = Math.round(GeoJSON.distance(location.latitude, location.longitude, input.latitude, input.longitude)) + ' Km';
     };
 
     return distance;

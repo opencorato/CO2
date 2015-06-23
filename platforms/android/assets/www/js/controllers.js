@@ -40,8 +40,8 @@ angular.module('airq.controllers', [])
     $scope.refresh();
   });
 
-  function _callback_message(open, message, counter) {
-    showSpinner(open, message);
+  function _callback_message(message, counter) {
+    showSpinner(message);
   };
 
   //////////////////////////////////
@@ -249,10 +249,6 @@ angular.module('airq.controllers', [])
 
   };
 
-  $scope.textRenderer = function (value) {
-    return value;
-  };
-
   ///////////////////////
   //
   // Geolocation
@@ -264,7 +260,6 @@ angular.module('airq.controllers', [])
     console.log('getting position: ' +  JSON.stringify(position));
     Geolocation.save(position);
     $scope.refresh();
-
   };
 
   var _callback_geolocation_error = function (error) {
@@ -488,11 +483,12 @@ angular.module('airq.controllers', [])
       }
 
       showSpinner(false);
+
     }, _callback_message);
   };
 
-  function _callback_message(open, message, counter) {
-    showSpinner(open, message);
+  function _callback_message(message, counter) {
+    showSpinner(true, message);
   };
 
   // calcolo la variazione di valori rispetto ai valori precedenti

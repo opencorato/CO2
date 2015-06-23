@@ -40,8 +40,8 @@ angular.module('airq.controllers', [])
     $scope.refresh();
   });
 
-  function _callback_message(open, message, counter) {
-    showSpinner(open, message);
+  function _callback_message(message, counter) {
+    showSpinner(message);
   };
 
   //////////////////////////////////
@@ -235,11 +235,13 @@ angular.module('airq.controllers', [])
           return item.city == data_s[0].city;
         });
 
-        _prepare(data_filtered)
-
+        _prepare(data_filtered);
         console.log('change gauge...');
-
         last();
+
+        // catico tutti gli altri dati
+        var data_all = _.last(data_airq, _.size(data_airq)-1);
+        $scope.airqlistall = data_all;
 
         showSpinner(false);
 
@@ -247,10 +249,6 @@ angular.module('airq.controllers', [])
 
     }, _callback_message);
 
-  };
-
-  $scope.textRenderer = function (value) {
-    return value;
   };
 
   ///////////////////////
@@ -263,8 +261,7 @@ angular.module('airq.controllers', [])
     $scope.view_error = false;
     console.log('getting position: ' +  JSON.stringify(position));
     Geolocation.save(position);
-    $scope.refresh();
-
+    // $scope.refresh();
   };
 
   var _callback_geolocation_error = function (error) {
@@ -488,11 +485,12 @@ angular.module('airq.controllers', [])
       }
 
       showSpinner(false);
+
     }, _callback_message);
   };
 
-  function _callback_message(open, message, counter) {
-    showSpinner(open, message);
+  function _callback_message(message, counter) {
+    showSpinner(true, message);
   };
 
   // calcolo la variazione di valori rispetto ai valori precedenti

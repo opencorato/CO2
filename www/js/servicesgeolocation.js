@@ -34,6 +34,8 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
       watchID: 0
   };
 
+  var watchID;
+
   var geolocation = {
 
     ToLL: function (north, east, utmZone) {
@@ -49,9 +51,11 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
       location.speed = position.coords.speed;
       location.timestamp = position.timestamp;
 
+      location.watchID = watchID;
+
       $localstorage.setObject('location', location);
 
-      console.log('Position: ' + JSON.stringify(location));
+      // console.log('Position: ' + JSON.stringify(location));
     },
     error: function (error) {
       _callback_geolocation_error(error);
@@ -61,6 +65,7 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
       navigator.geolocation.getCurrentPosition(callback_success, callback_error);
     },
     watch: function (callback_success, callback_error) {
+      
       console.log('watching position ...');
       
       var options = { 
@@ -69,7 +74,7 @@ service.factory('Geolocation', function ($localstorage, MAPQUEST, UTILITY, $http
         enableHighAccuracy: true 
       };
       
-      navigator.geolocation.watchPosition(callback_success, callback_error, options);
+      watchID = navigator.geolocation.watchPosition(callback_success, callback_error, options);
     },
     location: function () {
       var location = $localstorage.getObject('location');

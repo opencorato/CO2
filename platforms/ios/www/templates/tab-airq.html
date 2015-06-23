@@ -1,6 +1,6 @@
 <ion-view view-title="CO2" hide-nav-bar="true" cache-view="false">
     
-    <ion-header-bar class="bar bar-header bar-light">
+    <ion-header-bar class="bar bar-header bar-positive">
       <h1 class="title">Qualità dell'aria</h1>
       <div class="buttons">
         <button class="button button-clear" ng-click="openModal()"><i class="icon ion-ios-help"></i></button>
@@ -57,7 +57,29 @@
                     </div>          
                 </div>
         </ion-list>
+
+        <ion-list>
+            <ion-item collection-repeat="airq_item in airqlistall">
+                <a class="item item-avatar item-text-wrap" ui-sref="tab.detail({poll: airq.polluting })">
+                    <img ng-src=" {{ airq_item.aiq.level | level_image }} " />
+                    <h2>{{ airq_item.polluting }} <i class="{{ icon_value }}"> {{ last_value | last:2 }} </i></h2>
+                    <h3><i class="icon ion-ios-location"></i> {{ airq_item.city }} ({{ airq_item.state }}), {{ airq_item.location | distance }}</h3>
+                    <h4>{{ airq_item.aiq.level | level_descr }}<br />
+                    Inquinamento di tipo {{ airq_item.aiq.type }}</h4>
+                    <p ng-if="airq.aiq.type == 'industriale'"><strong>{{ airq.aiq.warning }} volte sopra il valore limite</strong></p>
+                    <p><p ng-if="airq.aiq.type == 'urbano'"><strong>Qualità dell'aria: {{ airq_item.aiq.value | number: 1 }} </strong></p>
+                    <p>Valore misurato: {{ airq_item.aiq.realvalue | number }} {{ airq_item.aiq.um }}</p>
+                </a>
+                <div class="button-bar button-clear">
+                  <a class="button button-clear" ng-click="share('facebook', airq_item)"><i class="icon ion-social-facebook"></i></a>
+                  <a class="button button-clear" ng-click="share('twitter', airq_item)"><i class="icon ion-social-twitter"></i></a>
+                  <a class="button button-clear" ng-click="share('whatsapp', airq_item)"><i class="icon ion-social-whatsapp"></i></a>
+                </div>
+            </ion-item>
+        </ion-list>
         
+        <ion-infinite-scroll on-infinite="refresh()" immediate-check="false"></ion-infinite-scroll>
+
   </ion-content>
   
 </ion-view>

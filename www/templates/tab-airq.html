@@ -12,28 +12,30 @@
         <ion-refresher on-refresh="refresh()" pulling-text="Pull to Refresh"></ion-refresher>
 
         <ion-list>
+
             <div>
                 <p ng-show="view_error">
                     <i class="icon ion-alert-circled"></i> {{ error }}
                 </p>
             </div>
-
-            <ion-item collection-repeat="airq in airqlist">
+            <!-- 
+            <ion-item collection-repeat="airq in airqlist | orderBy: 'airq.aiq.level' : false | unique : 'polluting'">
+            -->
+            <ion-item collection-repeat="airq in airqlist | unique: ['polluting']">
                 <div class="list card">
                     <div class="item item-avatar item-text-wrap">
-                        <img ng-src=" {{ airq.item.aiq.level | level_image }}" />
-                        <h2>{{ airq.item.city }}</h2>
-                        <h3>{{ airq.item.aiq.value | number : 1 }} {{ last | last }}, {{ airq.item.aiq.level | level_descr }}</h3>
-                        <h4>Inquinamento di tipo {{ airq.item.aiq.type }}</h4>
-                        <p>{{ airq.item.polluting | polluting }}</p>
-
+                        <img ng-src=" {{ airq.aiq.level | level_image }}" />
+                        <h2>{{ airq.city }} ({{ airq.location | distance }})</h2>
+                        <h3>{{ airq.aiq.value | number : 1 }} {{ last | last }}, {{ airq.aiq.level | level_descr }}</h3>
+                        <h4>Inquinamento di tipo {{ airq.aiq.type }}</h4>
+                        <p>{{airq.polluting | polluting }}</p>
                     </div>
 
                     <div class="item item-body" align="center">
-                    <h2>{{ airq.item.polluting }}</h2> 
-                    <h3>{{ airq.item.aiq.realvalue | number : 1 }} {{ airq.item.aiq.um }}</h2></h3>
+                    <h2>{{airq.polluting}}</h2> 
+                    <h3>{{airq.aiq.realvalue | number : 1}} {{ airq.aiq.um }}</h2></h3>
                     <nvd3-bullet-chart
-                            data="airq"
+                            data="airq_meters"
                             margin="{left:0,top:10,bottom:10,right:0}"
                             height="160"
                             orient="top">
@@ -42,22 +44,22 @@
                     </div>
 
                     <div class="item tabs tabs-secondary tabs-icon-left">
-                        <a class="tab-item" ui-sref="tab.detail({poll: airq.item.polluting })">
+                        <a class="tab-item" href="#/tab/airq/{{airq.polluting}}">
                           <i class="icon ion-ios-location"></i>
                           Mappa
                         </a>
-                        <a class="tab-item" href="#" ng-click="share()">
-                          <i class="icon ion-share"></i>
-                          Share
-                        </a>
-                        <a class="tab-item" href="#" ng-show="view_error">
-                          <i class="icon ion-alert-circled"></i>
-                          {{ error }}
+                        <a class="tab-item" ng-click="share(airq)">
+                            <i class="icon ion-share"></i>
+                            Share
                         </a>
                     </div>          
                 </div>
+            </ion-item>
         </ion-list>
-        
+        <!--
+        <ion-infinite-scroll on-infinite="refresh()" immediate-check="false"></ion-infinite-scroll>
+        -->
+
   </ion-content>
   
 </ion-view>
