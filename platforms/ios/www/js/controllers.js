@@ -55,13 +55,13 @@ angular.module('airq.controllers', [])
     var image = '';
     var link = '';
 
-    var l = _.find(Level.items, function (item) {
-      return item.level === p_sel.aiq.level;
+    var l = _.find(Level.items, function (item_data) {
+      return item_data.level === item.aiq.level;
     });
 
     if (typeof l !== 'undefined') {
-      message = 'Rilevato inquinante ' + p_sel.polluting + ' a ' + Math.round(p_sel.aiq.realvalue) + ' ' + p_sel.aiq.um + ' (aqi: ' + Math.round(p_sel.aiq.value) + ') ' +
-                'a ' + p_sel.city + ',inquinamento ' + p_sel.aiq.type + ',' + l.name;
+      message = 'Rilevato inquinante ' + item.polluting + ' a ' + Math.round(item.aiq.realvalue) + ' ' + p_sel.aiq.um + ' (aqi: ' + Math.round(p_sel.aiq.value) + ') ' +
+                'a ' + item.city + ',inquinamento ' + item.aiq.type + ',' + l.name;
 
       image = SHARE.github + l.image;
       link = SHARE.www;
@@ -251,7 +251,7 @@ angular.module('airq.controllers', [])
     $scope.view_error = true;
     console.error(message);
     $scope.error = message;
-  }
+  };
 
   ///////////////////////
   //
