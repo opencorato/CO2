@@ -175,9 +175,9 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
     // The App ID (from apps.ionic.io) for the server
     app_id: 'be9c11c6',
     // The public API key all services will use for this app
-    api_key: 'd93aa4cb7b0f4a8d3aa9f0a1970dc29c1764f9598f01195d',
+    api_key: '5e958844de2a91d1df7a8c7780fadde9ead0558d3c0c4ff0',
     // The GCM project ID (project number) from your Google Developer Console (un-comment if used)
-    gcm_id: '812864579370'
+    gcm_id: '790973966275'
   });
 }])
 

@@ -6,29 +6,59 @@
 
 var loginctrl = angular.module('airq.logincontrollers', ['leaflet-directive']);
 
-loginctrl.controller('LogInCtrl', function ($scope, $rootScope, $stateParams, $ionicUser, $ionicPush, $cordovaDevice, $localstorage) {
+loginctrl.controller('LogInCtrl', function ($scope, $rootScope, $stateParams, $ionicUser, $ionicPush, $localstorage) {
 
 	var user = $localstorage.getObject('user');
-	var uuid = $cordovaDevice.getUUID();
+	var uuid;
 
-	var options = {
-	  user_id: user.user_id,
-	  name: user.name,
-	  bio: user.bio
+	var deviceInformation = ionic.Platform.device();
+	
+	var isWebView = ionic.Platform.isWebView();
+  	var isIPad = ionic.Platform.isIPad();
+  	var isIOS = ionic.Platform.isIOS();
+  	var isAndroid = ionic.Platform.isAndroid();
+  	var isWindowsPhone = ionic.Platform.isWindowsPhone();
+
+  	if (typeof user.user_id === 'undefined') {
+  		uuid = $ionicUser.generateGUID();
+  		console.log('uuid test: ' + uuid);
+  	} else {
+  		uuid = user.user_id;
+  		console.log('uuid saved: ' + uuid);
+  	}
+
+  	if (isIPad || isIOS || isAndroid || isWindowsPhone) {
+  		console.log('isIOS: ' + isIOS);
+  		console.log('isAndroid: ' + isAndroid);
+  		console.log('isIPad: ' + isIPad);
+  		console.log('isWindowsPhone: ' + isWindowsPhone);
+  		if (typeof deviceInformation.uuid !== 'undefined') {
+  			uuid = deviceInformation.uuid;
+  		};
+  		console.log('uuid device: ' + uuid);
+  	};
+
+	$scope.user = {
+		user_id: uuid,
+		name: user.name,
+		bio: user.bio
 	};
 
-	angular.extend(user, {
+	angular.extend($scope.user, {
       name: user.name,
       bio: user.bio
     });
 
-	$ionicUser.identify(options).then(function(){
+    console.log('user identified -> ' + JSON.stringify($scope.user));
+                     
+	$ionicUser.identify($scope.user).then(function(){
 	  $scope.identified = true;
-	  console.log('user identified -> ' + JSON.stringify(user));
+	  console.log('user identified -> ' + JSON.stringify($scope.user));
+	  $scope.run();
 	}, function(err) {
 		// error
 		$scope.identified = false;
-		console.log('error to identify user -> ' + JSON.stringify(user));
+		console.log('error to identify user -> ' + JSON.stringify($scope.user));
 	});
 
 	$scope.register = function () {
@@ -61,9 +91,11 @@ loginctrl.controller('LogInCtrl', function ($scope, $rootScope, $stateParams, $i
 	        // console.log(notification);
 	        return true;
 	      }
-	    });
+	    }, options);
 
 	    console.log('done user registration');
+
+	    $scope.run();
 	};
 
 	$rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
@@ -71,5 +103,9 @@ loginctrl.controller('LogInCtrl', function ($scope, $rootScope, $stateParams, $i
     	console.log('Ionic Push: Got token ', data.token, data.platform);
     	$scope.token = data.token;
   	});
+
+  	$scope.run = function () {
+  		window.location.href = '#/tab/airq';
+  	}
 
 });

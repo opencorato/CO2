@@ -225,7 +225,7 @@ angular.module('airq.controllers', [])
       };
     }
 
-    console.log(JSON.stringify(item)); 
+    // console.log(JSON.stringify(item)); 
     return data_meters;
 
   };
