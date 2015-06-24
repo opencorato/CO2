@@ -192,7 +192,7 @@ filters.filter("level_descr", function (_, Level) {
     });
 
     if (typeof l === 'undefined') {
-      return ''
+      return Level.items[0].name;
     } else {
       return l.name;   
     };
@@ -229,7 +229,9 @@ filters.filter("level_image", function (Level) {
 
       if (typeof l !== 'undefined') {
         image = l.image;
-      };
+      } else {
+        image = Level.items[0].image;
+      }
     };
 
     return image;
