@@ -1,4 +1,4 @@
-<ion-view view-title="CO2" hide-nav-bar="true" cache-view="false">
+<ion-view view-title="CO2" hide-nav-bar="true" cache-view="true">
     
     <ion-header-bar class="bar bar-header bar-positive">
       <h1 class="title">Qualità dell'aria</h1>
@@ -24,18 +24,18 @@
             <ion-item collection-repeat="airq in airqlist | unique: ['polluting']">
                 <div class="list card">
                     <div class="item item-avatar item-text-wrap">
-                        <img ng-src=" {{ airq.aiq.level | level_image }}" />
-                        <h2>{{ airq.city }} ({{ airq.location | distance }})</h2>
-                        <h3>{{ airq.aiq.value | number : 1 }} {{ last | last }}, {{ airq.aiq.level | level_descr }}</h3>
-                        <h4>Inquinamento di tipo {{ airq.aiq.type }}</h4>
-                        <p>{{airq.polluting | polluting }}</p>
+                        <img ng-src=" {{ airq.item.aiq.level | level_image }}" />
+                        <h2>{{ airq.item.city }} ({{ airq.item.location | distance }})</h2>
+                        <h3>{{ airq.item.aiq.value | number : 1 }} {{ last | last }}, {{ airq.item.aiq.level | level_descr }}</h3>
+                        <h4>Inquinamento di tipo {{ airq.item.aiq.type }}</h4>
+                        <p>{{airq.item.polluting | polluting }}</p>
                     </div>
 
                     <div class="item item-body" align="center">
-                    <h2>{{airq.polluting}}</h2> 
-                    <h3>{{airq.aiq.realvalue | number : 1}} {{ airq.aiq.um }}</h2></h3>
+                    <h2>{{airq.item.polluting}}</h2> 
+                    <h3>{{airq.item.aiq.realvalue | number : 1}} {{ airq.item.aiq.um }}</h2></h3>
                     <nvd3-bullet-chart
-                            data="airq_meters"
+                            data="airq.meters"
                             margin="{left:0,top:10,bottom:10,right:0}"
                             height="160"
                             orient="top">
@@ -44,11 +44,17 @@
                     </div>
 
                     <div class="item tabs tabs-secondary tabs-icon-left">
-                        <a class="tab-item" href="#/tab/airq/{{airq.polluting}}">
+                        <a class="tab-item" href="#/tab/airq/{{airq.item.polluting}}">
                           <i class="icon ion-ios-location"></i>
                           Mappa
                         </a>
-                        <a class="tab-item" ng-click="share(airq)">
+                        <!--
+                        <a class="tab-item" ng-click="stats(airq.item)">
+                            <i class="icon ion-stats-bars"></i>
+                            Stats
+                        </a>
+                        -->
+                        <a class="tab-item" ng-click="share(airq.item)">
                             <i class="icon ion-share"></i>
                             Share
                         </a>

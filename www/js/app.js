@@ -17,7 +17,7 @@
 //
 //
 
-angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'airq.controllers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'frapontillo.gage', 'async', 'S', 'pouchdb', 'nvd3ChartDirectives'])
+angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'airq.controllers', 'airq.logincontrollers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.chartscontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'frapontillo.gage', 'async', 'S', 'pouchdb', 'nvd3ChartDirectives'])
 
 .run(function ($ionicPlatform, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush, $cordovaBackgroundGeolocation) {
 
@@ -117,6 +117,10 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   name: 'co2'  // nome del database
 })
 
+.constant('HISTORY', {
+  url: 'http://www.vincenzopatruno.org/api/?q=getdata'
+})
+
 // dati di importIO 
 .constant('IMPORT', {
   config: {
@@ -169,11 +173,11 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   // Identify app
   $ionicAppProvider.identify({
     // The App ID (from apps.ionic.io) for the server
-    app_id: '0a6e7be9',
+    app_id: 'be9c11c6',
     // The public API key all services will use for this app
-    api_key: 'd93aa4cb7b0f4a8d3aa9f0a1970dc29c1764f9598f01195d',
+    api_key: '5e958844de2a91d1df7a8c7780fadde9ead0558d3c0c4ff0',
     // The GCM project ID (project number) from your Google Developer Console (un-comment if used)
-    gcm_id: '812864579370'
+    gcm_id: '790973966275'
   });
 }])
 
@@ -189,7 +193,7 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
@@ -217,6 +221,26 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
       }
   })
 
+  .state('tab.charts', {
+    url: '/charts/:city/:polluting/:days',
+    views: {
+      'tab-airq': {
+        templateUrl: 'templates/tab-airq-charts.html',
+        controller: 'ChartsCtrl'
+      }
+    }
+  })
+
+  .state('tab.login', {
+    url: '/login',
+    views: {
+      'tab-airq': {
+        templateUrl: 'templates/tab-login.html',
+        controller: 'LogInCtrl'
+      }
+    }
+  })
+
   .state('tab.detail', {
     url: '/airq/:poll',
     views: {
@@ -228,6 +252,6 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/airq');
+  $urlRouterProvider.otherwise('/tab/login');
 
 });

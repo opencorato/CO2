@@ -191,23 +191,36 @@ angular.module('airq.controllers', [])
     var data_meters = [];
 
     for (var i = 0; i < $scope.airqlist.length; i++) {
-        $scope.$watch('airqlist[' + i + ']', function (newValue, oldValue) {
-          
-          var data_item = {
-            title: newValue.polluting,
-            subtitle: newValue.aiq.realvalue + ' ' + newValue.aiq.um,
-            ranges: [0, 500],
-            measures: [],  
-            markers: [250, 400]
-          };
-
-          data_item.measures.push(parseFloat(newValue.aiq.realvalue));
-
-          //console.log(JSON.stringify(data_item)); 
-
-          $scope.airq_meters = data_item;
+        $scope.$watch('airqlist[' + i + ']', function (newValue, oldValue) {  
+          $scope.airq_meters = _get_meters(newValue);
         });
     };
+  };
+
+  function _get_meters(item) {
+    
+    var v = 0;
+    
+    if (!isNaN(item.aiq.realvalue)) {
+      v = item.aiq.realvalue;
+    };
+
+    if (v === 0) {
+      var data_meters = {};
+    } else {
+
+      var data_meters = {
+        title: item.polluting,
+        subtitle: Math.round(v) + ' ' + item.aiq.um,
+        ranges: [0, 500],
+        measures: [parseFloat(v)],  
+        markers: [250, 400]
+      };
+    }
+
+    console.log(JSON.stringify(item)); 
+    return data_meters;
+
   };
 
   function _load() {
@@ -227,23 +240,48 @@ angular.module('airq.controllers', [])
 
       $scope.levels = Level.items;
 
+      /*
       data_filtered = _.filter(data.dataset, function (item) {
         return item.aiq.level >= UTILITY.level;
       });
+      */
 
-      var data_sorted = _.sortBy(data_filtered, function (item) {
+      var data_sorted = _.sortBy(data.dataset, function (item) {
           // console.log('item sorted: ' + JSON.stringify(item));
           return GeoJSON.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
       });
 
-      $scope.airqlist = data_sorted;
+      //$scope.airqlist = data_sorted;
 
-      _prepare_meters();
+      //_prepare_meters();
+
+      _prepare_data(data_sorted);
+
       _last();
 
       showSpinner(false);
 
     }, _callback_message, _error);
+
+  };
+
+  function _prepare_data(data) {
+
+    var d = [];
+
+    async.each(data, function (item, callback) {
+      var i = {
+        item: item,
+        polluting: item.polluting,
+        meters: _get_meters(item)
+      };
+      d.push(i);
+      callback();
+    }, function (err) {
+      if (!err) {
+        $scope.airqlist = d;
+      }
+    });
 
   };
 
