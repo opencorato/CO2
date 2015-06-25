@@ -17,11 +17,13 @@
 //
 //
 
-angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'airq.controllers', 'airq.logincontrollers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.chartscontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'frapontillo.gage', 'async', 'S', 'pouchdb', 'nvd3ChartDirectives'])
+angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'ionic.service.analytics', 'airq.controllers', 'airq.logincontrollers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.chartscontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'frapontillo.gage', 'async', 'S', 'pouchdb', 'nvd3ChartDirectives'])
 
-.run(function ($ionicPlatform, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush, $cordovaBackgroundGeolocation) {
+.run(function ($ionicPlatform, $ionicAnalytics, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush, $cordovaBackgroundGeolocation) {
 
   $ionicPlatform.ready(function () {
+
+    $ionicAnalytics.register();
 
     //////////////////////////////////////////////
     // 
@@ -169,8 +171,10 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
     .scriptUrl('lib/moment/moment.js');
 })
 
-.config(['$ionicAppProvider', function($ionicAppProvider) {
-  // Identify app
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $ionicAppProvider) {
+
+  $ionicConfigProvider.tabs.position('bottom');
+
   $ionicAppProvider.identify({
     // The App ID (from apps.ionic.io) for the server
     app_id: 'be9c11c6',
@@ -179,11 +183,6 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
     // The GCM project ID (project number) from your Google Developer Console (un-comment if used)
     gcm_id: '790973966275'
   });
-}])
-
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-
-  $ionicConfigProvider.tabs.position('bottom');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router

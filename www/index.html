@@ -31,6 +31,7 @@
     <script src="lib/angular-websocket/angular-websocket.js"></script>
     <script src="lib/ionic-service-core/ionic-core.js"></script>
     <script src="lib/ionic-service-push/ionic-push.js"></script>
+    <script src="lib/ionic-service-analytics/ionic-service-analytics.js"></script>
     
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -142,7 +143,7 @@
     <script type="text/javascript" src="js/filters.js"></script>
 
   </head>
-  <body ng-app="airq">
+  <body ng-app="airq" ion-track-auto>
     <!--
       The nav bar that will be updated as we navigate between views.
     -->

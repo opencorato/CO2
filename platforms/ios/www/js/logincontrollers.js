@@ -28,14 +28,13 @@ loginctrl.controller('LogInCtrl', function ($scope, $rootScope, $stateParams, $i
   	}
 
   	if (isIPad || isIOS || isAndroid || isWindowsPhone) {
-  		console.log('isIOS: ' + isIOS);
-  		console.log('isAndroid: ' + isAndroid);
-  		console.log('isIPad: ' + isIPad);
-  		console.log('isWindowsPhone: ' + isWindowsPhone);
+  		console.log('isIOS: ' + isIOS + '-isAndroid: ' + isAndroid + '-isIPad: ' + isIPad + '-isWindowsPhone: ' + isWindowsPhone);
+  		console.log('device: ' + JSON.stringify(deviceInformation));
+  		
   		if (typeof deviceInformation.uuid !== 'undefined') {
   			uuid = deviceInformation.uuid;
+  			console.log('uuid device: ' + uuid);
   		};
-  		console.log('uuid device: ' + uuid);
   	};
 
 	$scope.user = {
@@ -99,7 +98,7 @@ loginctrl.controller('LogInCtrl', function ($scope, $rootScope, $stateParams, $i
 	};
 
 	$rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-    	alert("Successfully registered token " + data.token);
+    	console.log("Successfully registered token " + data.token);
     	console.log('Ionic Push: Got token ', data.token, data.platform);
     	$scope.token = data.token;
   	});
