@@ -50,7 +50,7 @@ I dati di monitoraggio dell'aria vengono rilevati dalle centraline ARPA più vic
 
 ## Riferimento
 
-La App è stata sviluppata con [IonicFramework](http://www.ionicframework.com)
+La App è stata sviluppata con [IonicFramework](http://www.ionicframework.com)<br />
 Post sul blog dello sviluppatore, [CO2, Un naso elettronico sul vostro smartphone](http://giuseppezileni.github.io/app/2015/06/20/co2.html)
 
 ## Autore
