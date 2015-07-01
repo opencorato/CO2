@@ -70,6 +70,11 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		},
 
 		exec: function (data, callback_service, callback_message, callback_error) {
+			
+			if (typeof callback_message === 'function') {
+		    	callback_message('inizio ottimizzazione dati ...');
+			};
+
 			async.series([
 				
 				/////////////////////////////////////////
@@ -87,7 +92,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 					// console.log('optimizing data ' + JSON.stringify(data_db.data))
 
 					if (typeof callback_message === 'function') {
-						callback_message('optimizing data ...', _.size(data_response));
+						callback_message('ottimizzo n.' + _.size(data) + ' dati.');
 					};
 
 					async.each(data, function (item, callback) {
@@ -140,7 +145,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    function (callback_root) {
 
 			    		if (typeof callback_message === 'function') {
-			    			callback_message('calculating air quality', 0);
+			    			callback_message('calcolo la qualità dell\'aria');
 						};
 
 				    	console.log('start calculating air quality ...');
@@ -164,7 +169,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		    		console.log('init setting locations airq ...');
 
         			if (typeof callback_message === 'function') {
-		    			callback_message('reading stations ...', 0);
+		    			callback_message('leggo la posizione delle stazioni');
 					};
         
 			        Stations.get(data_json.dataset, function (err, data) {
@@ -255,7 +260,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		},
 
 		// crea legge i dati
-		start: function (callback_service, callback_message, callback_error) {
+		start: function (force, callback_service, callback_message, callback_error) {
 
 			var date_now = $moment().format("YYYYMMDD");
   			tag = date_now;
@@ -288,7 +293,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    	console.log('apro il database');
 			    	
 			    	if (typeof callback_message === 'function') {
-						callback_message('connect to data ...', 0);
+						callback_message('connect to data ...');
 					};
 
 			    	// controllo il database dei dati
@@ -307,7 +312,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		    		console.log('controllo il documento by ID: ' + tag);
 			    	
 			    	if (typeof callback_message === 'function') {
-						callback_message('reading data ...', 0);
+						callback_message('reading data ...');
 					};
 
 			    	pdb.get(db, tag, function(err, data) {
@@ -320,6 +325,8 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    			console.log('non ho trovato il documento.');
 			    			callback_root(false, 'next');
 			    		};
+
+			    		isDb = !force;
 			    	});
 			    },
 
@@ -334,34 +341,50 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
   						console.log('importio start by id: ' + tag);
 
   						if (typeof callback_message === 'function') {
-							callback_message('importing data ...', 0);
+							callback_message('Comincio il primo import di dati dalle centraline ARPA.\nPotrebbe richiedere un pò di tempo.');
 						};
 	  				
 	  					data_db._id = tag;
 
 						// carico i dati da importio
 						async.each(IMPORT.curls, function (item, callback) {
+							
 							$http(item)
                             	.success(function (data, status, headers, config) {
-				            	//handle success
-				            	console.log('Error data type: ' + JSON.stringify(data.errorType));
-				            	if (typeof data.errorType !== 'undefined') {
-				            		_error_load_importio(data, status, headers, config, callback, callback_error, 'non riesco a leggere i dati dalle centraline ARPA. Riprova più tardi.');
-				            	} else {
-				            		_create_data(async, data.results, function (err, d) {
-				            			// console.log('Data: ' + JSON.stringify(d));
-				            			data_response = _.union(data_response, d);
-                                		console.log('data loaded.');
-                                		callback();
-				            		});
-                                };
+
+                            		//handle success
+				            		console.log('Error data type: ' + JSON.stringify(data.errorType));
+				            		
+				            		if (typeof data.errorType !== 'undefined') {
+				            			_error_load_importio(data, status, headers, config, callback, callback_error, 'non riesco a leggere i dati dalle centraline ARPA. Riprova più tardi.');
+				            		} else {
+
+				            			if (typeof callback_message === 'function') {
+											callback_message('Preparo i dati importati.');
+										};
+
+				            			_create_data(async, data.results, function (err, d) {
+				            				// console.log('Data: ' + JSON.stringify(d));
+				            				data_response = _.union(data_response, d);
+                                			console.log('data loaded.');
+                                			callback();
+				            			});
+                                	};
+
                             }).error(function (data, status, headers, config) {
                             	_error_load_importio(data, status, headers, config, callback, callback_error, 'non riesco a leggere i dati dalle centraline ARPA. Riprova più tardi.');
                             });
+
 						}, function (err) {
+
 							if (!err) {
 								// salvo i dati nel database
 								if (!isDb) {
+									
+									if (typeof callback_message === 'function') {
+										callback_message('Salvo i dati importati.');
+									};
+
 									data_db.data = data_response;
 									pdb.put(db, data_db, function (err, response) {
 										//console.log('Response: ' + JSON.stringify(response));
@@ -388,7 +411,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
   				function (callback_root) {
 
 					if (typeof callback_message === 'function') {
-		    			callback_message('filtering data ...', 0);
+		    			callback_message('filtro i dati');
 					};
 
 			        console.log('Filtering data ... ');

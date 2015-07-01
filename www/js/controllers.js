@@ -37,10 +37,10 @@ angular.module('airq.controllers', [])
   showSpinner(true, 'initializing ...');
     
   $scope.$on('$ionicView.beforeEnter', function() {
-    $scope.refresh();
+    $scope.refresh(false);
   });
 
-  function _callback_message(message, counter) {
+  function _callback_message(message) {
     showSpinner(true, message);
   };
 
@@ -230,7 +230,7 @@ angular.module('airq.controllers', [])
 
   };
 
-  function _load() {
+  function _load(force) {
 
     var data_filtered;
 
@@ -238,7 +238,7 @@ angular.module('airq.controllers', [])
 
     location = Geolocation.location();
 
-    Import.start(function (err, data) {
+    Import.start(force, function (err, data) {
       
       // console.log('Dataset: ' + JSON.stringify(data.dataset));
       $scope.source = data.source.id;
@@ -309,7 +309,7 @@ angular.module('airq.controllers', [])
 
   Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
-  $scope.refresh = function () {
+  $scope.refresh = function (force) {
 
     // showSpinner(true, 'leggo i valori dalle centraline...');
     
@@ -330,7 +330,7 @@ angular.module('airq.controllers', [])
       $scope.view_error = false;
     };
 
-    _load();
+    _load(force);
 
   };
 

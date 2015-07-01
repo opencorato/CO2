@@ -40,8 +40,15 @@ angular.module('airq.controllers', [])
     $scope.refresh();
   });
 
-  function _callback_message(message, counter) {
+  function _callback_message(message) {
     showSpinner(true, message);
+  };
+
+  $scope.stats = function (item) {
+
+    var days = 7;
+
+    window.location.href = '#/tab/charts/' + item.city + '/' + item.polluting + '/' + days;
   };
 
   //////////////////////////////////
@@ -218,7 +225,7 @@ angular.module('airq.controllers', [])
       };
     }
 
-    console.log(JSON.stringify(item)); 
+    // console.log(JSON.stringify(item)); 
     return data_meters;
 
   };
@@ -240,20 +247,10 @@ angular.module('airq.controllers', [])
 
       $scope.levels = Level.items;
 
-      /*
-      data_filtered = _.filter(data.dataset, function (item) {
-        return item.aiq.level >= UTILITY.level;
-      });
-      */
-
       var data_sorted = _.sortBy(data.dataset, function (item) {
           // console.log('item sorted: ' + JSON.stringify(item));
           return GeoJSON.distance(location.latitude, location.longitude, item.location.latitude, item.location.longitude);
       });
-
-      //$scope.airqlist = data_sorted;
-
-      //_prepare_meters();
 
       _prepare_data(data_sorted);
 
@@ -428,7 +425,7 @@ angular.module('airq.controllers', [])
   Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
   $scope.back = function () {
-    window.location.href = '#/airq'
+    window.location.href = '#/tab/airq';
   };
 
   $ionicModal.fromTemplateUrl('templates/info_weather.html', {
