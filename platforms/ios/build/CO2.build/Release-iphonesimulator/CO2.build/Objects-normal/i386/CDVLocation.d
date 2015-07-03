@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Plugins/org.apache.cordova.geolocation/CDVLocation.m \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Plugins/org.apache.cordova.geolocation/CDVLocation.h \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Plugins/org.apache.cordova.geolocation/CDVLocation.m \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Plugins/org.apache.cordova.geolocation/CDVLocation.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVPlugin.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVPluginResult.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailability.h \

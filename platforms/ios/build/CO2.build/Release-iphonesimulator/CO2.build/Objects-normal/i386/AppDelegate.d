@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Classes/AppDelegate.m \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Classes/AppDelegate.h \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Classes/AppDelegate.m \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Classes/AppDelegate.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVViewController.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailability.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailabilityDeprecated.h \
@@ -12,5 +12,5 @@ dependencies: \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVPlugin.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVPluginResult.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/NSMutableArray+QueueAdditions.h \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Classes/MainViewController.h \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Classes/MainViewController.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVCommandDelegateImpl.h

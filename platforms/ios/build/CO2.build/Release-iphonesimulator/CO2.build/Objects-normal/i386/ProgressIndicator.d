@@ -1,5 +1,5 @@
 dependencies: \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Plugins/org.pbernasconi.progressindicator/ProgressIndicator.m \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Plugins/org.pbernasconi.progressindicator/ProgressIndicator.m \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDV.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailability.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailabilityDeprecated.h \
@@ -21,5 +21,5 @@ dependencies: \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/NSDictionary+Extensions.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/UIDevice+Extensions.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVJSON.h \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Plugins/org.pbernasconi.progressindicator/ProgressIndicator.h \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Plugins/org.pbernasconi.progressindicator/MBProgressHUD.h
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Plugins/org.pbernasconi.progressindicator/ProgressIndicator.h \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Plugins/org.pbernasconi.progressindicator/MBProgressHUD.h

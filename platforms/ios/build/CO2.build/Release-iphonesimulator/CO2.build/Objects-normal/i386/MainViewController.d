@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Classes/MainViewController.m \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Classes/MainViewController.h \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Classes/MainViewController.m \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Classes/MainViewController.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVViewController.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailability.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailabilityDeprecated.h \

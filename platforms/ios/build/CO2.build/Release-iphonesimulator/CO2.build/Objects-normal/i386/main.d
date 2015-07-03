@@ -1,1 +1,1 @@
-dependencies: /Users/gzileni/GitHub/co2/platforms/ios/CO2/main.m
+dependencies: /Users/gzileni/GitHub/CO2/platforms/ios/CO2/main.m

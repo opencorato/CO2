@@ -46,7 +46,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	};
   
 	$scope.$on('$ionicView.beforeEnter', function() {
-    	$scope.refresh();
+    	$scope.refresh(false);
     });
 
     function showSpinner (view, message) {
@@ -79,7 +79,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 
   	Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
-	$scope.refresh = function () {
+	$scope.refresh = function (force) {
 
 		showSpinner(true);
 
@@ -97,7 +97,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 		    }
 		});
 
-		Import.start(function (err, data) {
+		Import.start(force, function (err, data) {
 	      
 	      if (!err) {
 

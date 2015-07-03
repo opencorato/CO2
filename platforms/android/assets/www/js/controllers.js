@@ -219,9 +219,9 @@ angular.module('airq.controllers', [])
       var data_meters = {
         title: item.polluting,
         subtitle: Math.round(v) + ' ' + item.aiq.um,
-        ranges: [0, 500],
-        measures: [parseFloat(v)],  
-        markers: [250, 400]
+        ranges: [0, 8],
+        measures: [parseInt(item.aiq.level)],  
+        markers: [2, 6]
       };
     }
 

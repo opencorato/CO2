@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Plugins/com.phonegap.plugins.PushPlugin/PushPlugin.m \
-  /Users/gzileni/GitHub/co2/platforms/ios/CO2/Plugins/com.phonegap.plugins.PushPlugin/PushPlugin.h \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Plugins/com.phonegap.plugins.PushPlugin/PushPlugin.m \
+  /Users/gzileni/GitHub/CO2/platforms/ios/CO2/Plugins/com.phonegap.plugins.PushPlugin/PushPlugin.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDV.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailability.h \
   /Users/gzileni/GitHub/CO2/platforms/ios/build/emulator/include/Cordova/CDVAvailabilityDeprecated.h \

@@ -11,16 +11,17 @@
 
         <ion-refresher on-refresh="refresh(true)" pulling-text="Scorri per caricare i dati"></ion-refresher>
 
+        <div class="card" ng-show="view_error">
+            <div class="item item-text-wrap">
+                <i class="icon ion-alert-circled"></i> {{ error }}
+            </div>
+            <button class="button button-full button-positive" ng-click="refresh(true)">
+                Riprova
+            </button>
+        </div>
+
         <ion-list>
 
-            <div>
-                <p ng-show="view_error">
-                    <i class="icon ion-alert-circled"></i> {{ error }}
-                </p>
-            </div>
-            <!-- 
-            <ion-item collection-repeat="airq in airqlist | orderBy: 'airq.aiq.level' : false | unique : 'polluting'">
-            -->
             <ion-item collection-repeat="airq in airqlist | unique: ['polluting']">
                 <div class="list card">
                     <div class="item item-avatar item-text-wrap">

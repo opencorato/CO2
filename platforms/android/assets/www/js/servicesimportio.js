@@ -75,6 +75,8 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		    	callback_message('inizio ottimizzazione dati ...');
 			};
 
+			console.log('Data: ' + JSON.stringify(data_db.data));
+
 			async.series([
 				
 				/////////////////////////////////////////
@@ -316,17 +318,16 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 					};
 
 			    	pdb.get(db, tag, function(err, data) {
-			    		isDb = !err;
 			    		if (!err) {
 			    			console.log('documento trovato.');
 			    			data_db.data = data.data;
 			    			callback_root(false, 'next');
+			    			isDb = !force;
 			    		} else {
 			    			console.log('non ho trovato il documento.');
 			    			callback_root(false, 'next');
+			    			isDb = false;
 			    		};
-
-			    		isDb = !force;
 			    	});
 			    },
 
@@ -341,7 +342,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
   						console.log('importio start by id: ' + tag);
 
   						if (typeof callback_message === 'function') {
-							callback_message('Comincio il primo import di dati dalle centraline ARPA.\nPotrebbe richiedere un pò di tempo.');
+							callback_message('Comincio il primo import di dati dalle centraline ARPA. Potrebbe richiedere un pò di tempo.');
 						};
 	  				
 	  					data_db._id = tag;
