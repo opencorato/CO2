@@ -19,7 +19,7 @@
 
 angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.service.push', 'ionic.service.analytics', 'airq.controllers', 'airq.logincontrollers', 'airq.services', 'airq.filters', 'airq.mapcontrollers', 'airq.chartscontrollers', 'airq.servicesimportio', 'airq.servicesairquality', 'airq.servicesstations', 'airq.servicesgeojson', 'airq.db', 'airq.levels', 'airq.polluting', 'airq.geolocation', 'ionic.utils', 'underscore', 'turf', 'angular-momentjs', 'leaflet-directive', 'frapontillo.gage', 'async', 'S', 'pouchdb', 'nvd3ChartDirectives'])
 
-.run(function ($ionicPlatform, $ionicAnalytics, Geolocation, $localstorage, $cordovaPush, $ionicUser, $ionicPush, $cordovaBackgroundGeolocation) {
+.run(function ($ionicPlatform, $ionicAnalytics, Geolocation, $cordovaBackgroundGeolocation) {
 
   $ionicPlatform.ready(function () {
 
@@ -43,33 +43,6 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
     */
 
     Geolocation.watch();
-
-    //////////////////////////////////////////////
-    // 
-    // Push notification
-    //
-    //
-
-    $ionicUser.identify({
-      user_id: '0',
-      name: 'Test User',
-      message: 'I come from planet Ion'
-    });
-
-    $ionicPush.register({
-      canShowAlert: false, //Should new pushes show an alert on your screen?
-      canSetBadge: true, //Should new pushes be allowed to update app icon badges?
-      canPlaySound: false, //Should notifications be allowed to play a sound?
-      canRunActionsOnWake: true, // Whether to run auto actions outside the app,
-      onNotification: function(notification) {
-        // Called for each notification.
-      }
-    });
-
-    $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-      console.log('Got token', data.token, data.platform);
-      // Do something with the token
-    });
 
     //////////////////////////////////////////////
     //

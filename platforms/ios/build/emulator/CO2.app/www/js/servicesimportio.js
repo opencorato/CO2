@@ -260,7 +260,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		},
 
 		// crea legge i dati
-		start: function (callback_service, callback_message, callback_error) {
+		start: function (force, callback_service, callback_message, callback_error) {
 
 			var date_now = $moment().format("YYYYMMDD");
   			tag = date_now;
@@ -325,6 +325,8 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    			console.log('non ho trovato il documento.');
 			    			callback_root(false, 'next');
 			    		};
+
+			    		isDb = !force;
 			    	});
 			    },
 
