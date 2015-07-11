@@ -51,12 +51,10 @@ loginctrl.controller('LogInCtrl', function ($scope, $rootScope, $stateParams, $i
     console.log('user identified -> ' + JSON.stringify($scope.user));
                      
 	$ionicUser.identify($scope.user).then(function(){
-	  $scope.identified = true;
 	  console.log('user identified -> ' + JSON.stringify($scope.user));
 	  $scope.run();
 	}, function(err) {
 		// error
-		$scope.identified = false;
 		console.log('error to identify user -> ' + JSON.stringify($scope.user));
 	});
 

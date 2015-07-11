@@ -1,6 +1,6 @@
 {
   "name": "CO2",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "CO2: App per il monitoraggio dei dati ambientali",
   "dependencies": {
     "gulp": "^3.5.6",
@@ -24,7 +24,7 @@
     }
   ],
   "cordovaPlatforms": [
-    "android",
-    "ios"
+    "ios",
+    "android"
   ]
 }

@@ -1,4 +1,13 @@
-# CO2
+# Installazione
+
+<a href="https://play.google.com/store/apps/details?id=com.ionicframework.co2" target="_blank">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/it_generic_rgb_wo_60.png" />
+</a>
+
+<a href="https://itunes.apple.com/us/app/co2/id1006385114?l=it&ls=1&mt=8" target="_blank">
+  ![AppleStore](resources/ios/appstore.png)
+</a>
 
 ![co2](resources/android/android-banner-1.jpg)
 
@@ -40,13 +49,6 @@ I dati di monitoraggio dell'aria vengono rilevati dalle centraline ARPA più vic
 
 ## Previsioni Meteo
 ![weather](screenshots/iphone4s/weather.png)
-
-## Download
-
-<a href="https://play.google.com/store/apps/details?id=com.ionicframework.co2">
-  <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/it_generic_rgb_wo_60.png" />
-</a>
 
 ## Riferimento
 
