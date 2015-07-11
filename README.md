@@ -2,7 +2,7 @@
 
 ![co2](resources/android/android-banner-1.jpg)
 
-<a href="https://play.google.com/store/apps/details?id=com.ionicframework.co2">
+<a href="https://play.google.com/store/apps/details?id=com.ionicframework.co2" target="_blank">
   <img alt="Android app on Google Play"
        src="https://developer.android.com/images/brand/it_app_rgb_wo_45.png" />
 </a>
