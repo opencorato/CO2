@@ -1,15 +1,15 @@
-# Installazione
+# CO2
 
-<a href="https://play.google.com/store/apps/details?id=com.ionicframework.co2" target="_blank">
-  <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/it_generic_rgb_wo_60.png" />
+![co2](resources/android/android-banner-1.jpg)
+
+<a href="https://play.google.com/store/apps/details?id=com.ionicframework.co2">
+  <img alt="Android app on Google Play"
+       src="https://developer.android.com/images/brand/it_app_rgb_wo_45.png" />
 </a>
 
 <a href="https://itunes.apple.com/us/app/co2/id1006385114?l=it&ls=1&mt=8" target="_blank">
   ![AppleStore](resources/ios/appstore.png)
 </a>
-
-![co2](resources/android/android-banner-1.jpg)
 
 CO2 è una App sviluppata per il monitoraggio dei dati ambientali in Puglia, rilevati dalle centraline [ARPA](http://www.arpa.puglia.it/web/guest/qariainq) distribuite su tutto il [territorio regionale](https://www.arpa.puglia.it/c/document_library/get_file?uuid=68743289-14f7-4f12-aaa3-e3e4087f6675&groupId=13883).
 
