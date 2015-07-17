@@ -68,7 +68,7 @@ angular.module('airq.controllers', [])
 
     if (typeof l !== 'undefined') {
       message = 'Rilevato inquinante ' + item.polluting + ' a ' + Math.round(item.aiq.realvalue) + ' ' + item.aiq.um +
-                ' a ' + item.city + ',' + l.name;
+                ' a ' + item.city + '(' + item.station  + '),' + l.name;
 
       image = SHARE.github + l.image;
       link = SHARE.www;
