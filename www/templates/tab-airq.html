@@ -26,9 +26,13 @@
                 <div class="list card">
                     <div class="item item-avatar item-text-wrap">
                         <img ng-src=" {{ airq.item.aiq.level | level_image }}" />
-                        <h2>{{ airq.item.city }} ({{ airq.item.location | distance }})</h2>
-                        <h3>{{ airq.item.aiq.value | number : 1 }} {{ last | last }}, {{ airq.item.aiq.level | level_descr }}</h3>
-                        <h4>Inquinamento di tipo {{ airq.item.aiq.type }}</h4>
+                        <h2>{{ airq.item.city }} ({{ airq.item.location | distance }})
+                        </h2>
+                        <h3>{{ airq.item.data }}<br />
+                        {{ airq.item.station }}</h3>
+                        <h4><a href="https://en.wikipedia.org/wiki/Air_quality_index" target="_blank"><img src="img/wikipedia_small.png"></img> Indice di qualità dell'aria: {{ airq.item.aiq.value | number : 1 }}</a><br /> {{ airq.item.aiq.level | level_descr }} <br />
+                        Inquinamento di tipo {{ airq.item.aiq.type }}</h4>
+                        <p><a href="{{airq.item.polluting | polluting_link }}" target="_blank"><img src="img/wikipedia_small.png"></img> <strong>{{ airq.item.polluting }}</strong>, {{airq.item.polluting | polluting_element }} </a></p>
                         <p>{{airq.item.polluting | polluting }}</p>
                     </div>
 

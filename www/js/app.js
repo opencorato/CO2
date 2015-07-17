@@ -71,7 +71,7 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
   timeout: 60000,
   distance: 1000,
   heatmap: false,
-  force: false,
+  force: true,
   level: 2
 })
 
@@ -89,7 +89,8 @@ angular.module('airq', ['ionic', 'ngCordova', 'ionic.service.core', 'ionic.servi
 })
 
 .constant('DB', {
-  name: 'co2'  // nome del database
+  name: 'co2',  // nome del database
+  _id: 'airq'
 })
 
 .constant('HISTORY', {

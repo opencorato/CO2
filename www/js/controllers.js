@@ -37,7 +37,7 @@ angular.module('airq.controllers', [])
   showSpinner(true, 'initializing ...');
     
   $scope.$on('$ionicView.beforeEnter', function() {
-    $scope.refresh(false);
+    $scope.refresh(true);
   });
 
   function _callback_message(message) {
@@ -307,7 +307,7 @@ angular.module('airq.controllers', [])
     _error('No GPS');
   };
 
-  Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
+  // Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
   $scope.refresh = function (force) {
 

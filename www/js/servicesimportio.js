@@ -75,7 +75,7 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		    	callback_message('inizio ottimizzazione dati ...');
 			};
 
-			console.log('Data: ' + JSON.stringify(data_db.data));
+			console.log('Data: ' + JSON.stringify(data));
 
 			async.series([
 				
@@ -112,7 +112,8 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 					      location: {
 					        latitude: 0,
 					        longitude: 0
-					      }
+					      },
+					      data: data_json.source.date
 					    };
 
 					    var filter_text = '..';
@@ -264,8 +265,8 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		// crea legge i dati
 		start: function (force, callback_service, callback_message, callback_error) {
 
-			var date_now = $moment().format("YYYYMMDD");
-  			tag = date_now;
+			// var date_now = $moment().format("YYYYMMDD");
+  			// tag = date_now;
 
   			// se i dati non esistono allora bisogna crearli
 
@@ -276,7 +277,8 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    // cancello il database
 
   				function (callback_root) {
-  					if (UTILITY.force) {
+
+  					if (force) {
   						pdb.close(DB.name, function (err) {
   							console.log('cancello di database');
   							callback_root(err, 'next');
@@ -295,12 +297,13 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 			    	console.log('apro il database');
 			    	
 			    	if (typeof callback_message === 'function') {
-						callback_message('connect to data ...');
+						callback_message('connessione ai dati ...');
 					};
 
 			    	// controllo il database dei dati
   					pdb.open(DB.name, function (db_istance) {
   						db = db_istance;
+  						console.log('db opened.');
   						callback_root(false, 'next');
   					});
 			    },
@@ -311,16 +314,15 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
   				
 			    function (callback_root) {
 
-		    		console.log('controllo il documento by ID: ' + tag);
-			    	
-			    	if (typeof callback_message === 'function') {
+		    		if (typeof callback_message === 'function') {
 						callback_message('reading data ...');
 					};
 
-			    	pdb.get(db, tag, function(err, data) {
+			    	pdb.get(db, DB._id, function(err, data) {
 			    		if (!err) {
 			    			console.log('documento trovato.');
 			    			data_db.data = data.data;
+			    			// console.log(JSON.stringify(data_db.data));
 			    			callback_root(false, 'next');
 			    			isDb = !force;
 			    		} else {
@@ -339,13 +341,11 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 
   					if (!isDb) {
 
-  						console.log('importio start by id: ' + tag);
-
   						if (typeof callback_message === 'function') {
-							callback_message('Comincio il primo import di dati dalle centraline ARPA. Potrebbe richiedere un pò di tempo.');
+							callback_message('Leggo i dati dalle centraline ARPA. Potrebbe richiedere un pò di tempo.');
 						};
 	  				
-	  					data_db._id = tag;
+	  					data_db._id = DB._id;
 
 						// carico i dati da importio
 						async.each(IMPORT.curls, function (item, callback) {
@@ -364,9 +364,11 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 											callback_message('Preparo i dati importati.');
 										};
 
-				            			_create_data(async, data.results, function (err, d) {
+				            			_create_data(async, data.results, function (err, d, data) {
 				            				// console.log('Data: ' + JSON.stringify(d));
 				            				data_response = _.union(data_response, d);
+				            				console.log('data: ' + data);
+				            				data_json.source.date = data; 
                                 			console.log('data loaded.');
                                 			callback();
 				            			});
@@ -386,21 +388,27 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 										callback_message('Salvo i dati importati.');
 									};
 
+									// console.log(JSON.stringify(data_response));
 									data_db.data = data_response;
+
+									// console.log(JSON.stringify(data_db.data));
+
 									pdb.put(db, data_db, function (err, response) {
 										//console.log('Response: ' + JSON.stringify(response));
 										console.log('saved to db -> Err: ' + err + ' Response:' + JSON.stringify(response));
+										callback_root(false, 'next');
 									});
 								};
 							} else {
 								// errore to load data
 								if (typeof callback_error === 'function') {
 									callback_error('non riesco a leggere i dati dalle centraline ARPA. Riprova più tardi.');
+									callback_root(true, 'next');
 								};
 							}
-							callback_root(err, 'next');
 						});
 					} else {
+						// dati nel database
 						callback_root(false, 'next');	
 					}
   				}, 
@@ -419,10 +427,11 @@ service.factory('Import', function (IMPORT, _, $moment, $http, async, S, AirQual
 		        	
 		        	var data_filtered = _.filter(data_db.data, function(item){ 
 		            	
+		            	var isStation = S(item.item.centralina).isEmpty();
 		        		var v = parseFloat(item.item['valore/_source']);
 
-		            	return !S(item.item.centralina).isEmpty() || 
-		            		   !isNaN(v) ||
+		            	return !isStation && 
+		            		   !isNaN(v) &&
 		            		   v > 0;	  
 		          	});
 
@@ -458,10 +467,15 @@ function _create_data(async, data, callback_root) {
 	var data_result = [];
 	var inquinante;
 	var isData = false;
+	var data;
 
 	async.each(data, function (item, callback) {
 
-		if (typeof item.inquinante !== 'undefined') {
+		// console.log(JSON.stringify(data));
+
+		if (typeof item.data !== 'undefined') {
+			data = item.data;
+		} else if (typeof item.inquinante !== 'undefined') {
 			isData = true;
 			inquinante = S(S(item.inquinante).strip('Inquinante:').s).trim().s;
 		} else {
@@ -478,7 +492,7 @@ function _create_data(async, data, callback_root) {
 		callback();
 
 	}, function (err) {
-		callback_root(err, data_result);
+		callback_root(err, data_result, data);
 	});
 
 }

@@ -69,7 +69,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
   	var _callback_geolocation_success = function (position) {
 	    console.log('getting position: ' +  JSON.stringify(position));
 	    Geolocation.save(position);
-	    $scope.refresh();
+	    $scope.refresh(false);
 	};
 
 	var _callback_geolocation_error = function (error) {
@@ -77,7 +77,7 @@ mapctrl.controller('MapCtrl', function ($scope, $stateParams, Geolocation, $ioni
 	                  'message: ' + error.message + '\n');
 	};
 
-  	Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
+  	// Geolocation.watch(_callback_geolocation_success, _callback_geolocation_error);
 
 	$scope.refresh = function (force) {
 

@@ -79,6 +79,44 @@ filters.filter("polluting", function (_, Polluting) {
 
 });
 
+filters.filter("polluting_link", function (_, Polluting) {
+
+  return function (input) {
+
+    var polluting = _.find(Polluting, function (item) {
+      return item.name === input;
+    });
+
+    var poll_descr = ''
+
+    if (typeof polluting !== 'undefined') {
+      poll_descr = polluting.link;
+    };
+
+    return poll_descr;
+  };
+
+});
+
+filters.filter("polluting_element", function (_, Polluting) {
+
+  return function (input) {
+
+    var polluting = _.find(Polluting, function (item) {
+      return item.name === input;
+    });
+
+    var poll_descr = ''
+
+    if (typeof polluting !== 'undefined') {
+      poll_descr = polluting.element;
+    };
+
+    return poll_descr;
+  };
+
+});
+
 filters.filter("weather_data", function ($moment) {
   return function (input) {
 
